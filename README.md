@@ -1,70 +1,44 @@
-![image](assets/readme-photo.png)
- 
-# World's first AI portfolio 🤖✨  
+# Portfolio
 
-**Static portfolios are dead.**  
-So I built [toukoum.fr](https://toukoum.fr).
+An interactive, chat-style portfolio. Visitors tap a question or type their own, and the avatar
+"answers" with a typed-out reply and a rich card (projects, skills, resume, contact…).
 
-Instead of making you scroll endlessly, my portfolio adapts to *you*.  
-Ask a question — my AI avatar replies instantly.
+It is **fully static**: there is no AI, no API key and no server. Every answer is scripted in one
+content file, so hosting is free and nobody can run up a bill.
 
-## 👇 What can you ask?
+Theme and interaction design are based on [toukoum/portfolio](https://github.com/toukoum/portfolio).
 
-- 🧠 **Tech recruiter?** Ask about my stack & results  
-- 💻 **Dev?** Dive into my code & mindset  
-- 🧑‍🤝‍🧑 **Friend or family?** See what I’ve been working on  
+## Make it yours
 
----
+Everything a visitor sees lives in **[`src/data/portfolio.js`](src/data/portfolio.js)**. Search it
+for `TODO`:
 
-This is not a portfolio.  
-It’s a **conversation tailored to your curiosity**.
+| Section | What it controls |
+|---|---|
+| `site` | Page title, description, SEO |
+| `hero` | Landing greeting, headline, watermark word, avatar image + video |
+| `profile`, `skills`, `projects`, `resume`, `contact`, `fun`, `availability` | The cards |
+| `answers` | The scripted replies, which card each one shows, and the keywords that route a typed question to it |
+| `fallbackAnswer` | What is shown when a typed question matches nothing |
+| `quickQuestions`, `questionDrawer` | The question buttons and the "more questions" drawer |
 
-➡️ **Try it now:** [https://toukoum.fr](https://toukoum.fr)  
-*What will you ask?*
+Put your images and resume PDF in `public/` and point the paths at them. Until then,
+`public/placeholder.svg` is used. The avatar files (`landing-memojis.png`, `final_memojis.webm`,
+`final_memojis_ios.mp4`) are still the original author's and need replacing.
 
-## 🚀 How to run
+## Run
 
-Want to run this project locally? Here's what you need:
+Requires Node.js 18+.
 
-### Prerequisites
-- **Node.js** (v18 or higher)
-- **pnpm** package manager
-- **OpenAI API token** (for AI chat functionality)
-- **GitHub token** (for GitHub integration features)
+```bash
+pnpm install   # or npm install
+pnpm dev       # http://localhost:3000
+```
 
-### Setup
-1. **Clone the repository**
-   ```bash
-   git clone <your-repo-url>
-   cd portfolio
-   ```
+## Build and deploy
 
-2. **Install dependencies**
-   ```bash
-   pnpm install
-   ```
+```bash
+pnpm build     # writes the static site to /out
+```
 
-3. **Environment variables**
-   Create a `.env` file in the root directory:
-   ```env
-   OPENAI_API_KEY=your_openai_api_key_here
-   GITHUB_TOKEN=your_github_token_here
-   ```
-
-4. **Run the development server**
-   ```bash
-   pnpm dev
-   ```
-
-5. **Open your browser**
-   Navigate to `http://localhost:3000`
-
-### Getting your **tokens**
-- **OpenAI API Key**: Get it from [platform.openai.com](https://platform.openai.com/api-keys)
-- **GitHub Token**: Generate one at [github.com/settings/tokens](https://github.com/settings/personal-access-tokens) with repo access
-
-
-
-#### 🔖 Tags
-
-`#AIPortfolio` `#InnovationInTech` `#DigitalResume` `#JobSearch` `#TechInnovation` `#WebDevelopment` `#FutureTech`
+Deploy `/out` to any static host: Vercel, Netlify, Cloudflare Pages, GitHub Pages.
