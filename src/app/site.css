@@ -1,0 +1,195 @@
+/* ─────────────────────────────────────────────────────────────────────────
+   Site design system · B2 centred · glass · Electrify (dark) + light
+   Tokens here; the shadcn tokens in globals.css read from them.
+   ───────────────────────────────────────────────────────────────────────── */
+:root {
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --bg: #f4f6fa;
+  --ink: #0a0d14;
+  --ink-soft: #545c6e;
+  --surface: rgb(255 255 255 / 0.6);
+  --brand: #d4ff24;
+  --brand-ink: #05070c;
+  --em: #155bc9;
+  --hover-bg: rgb(10 20 50 / 0.06);
+  --g-tint: rgb(255 255 255 / 0.55);
+  --g-rim: rgb(255 255 255 / 0.95);
+  --g-rim-dark: rgb(20 40 90 / 0.1);
+  --g-shadow: 0 18px 40px -24px rgb(15 30 70 / 0.3);
+  --g-blur: 10px;
+  --ic-base: rgb(255 255 255 / 0.65);
+  --sheen: 0.35;
+  --sheen-hover: 0.6;
+  /* mercury toggle */
+  --merc-track: rgb(10 20 50 / 0.07);
+  --merc-inset: 0.18;
+  --merc-rim: rgb(10 20 50 / 0.08);
+  --merc-env: rgb(21 91 201 / 0.4);
+}
+.dark {
+  --bg: #030407;
+  --ink: #f2f5fb;
+  --ink-soft: #9aa3b5;
+  --surface: rgb(255 255 255 / 0.05);
+  --brand: #d4ff24;
+  --brand-ink: #05070c;
+  --em: #d4ff24;
+  --hover-bg: rgb(255 255 255 / 0.08);
+  --g-tint: rgb(16 22 40 / 0.38);
+  --g-rim: rgb(255 255 255 / 0.32);
+  --g-rim-dark: rgb(255 255 255 / 0.06);
+  --g-shadow: 0 22px 50px -26px rgb(0 0 0 / 0.8);
+  --ic-base: rgb(255 255 255 / 0.06);
+  --sheen: 0.08;
+  --sheen-hover: 0.16;
+  --merc-track: rgb(255 255 255 / 0.07);
+  --merc-inset: 0.6;
+  --merc-rim: rgb(255 255 255 / 0.1);
+  --merc-env: rgb(212 255 36 / 0.5);
+}
+
+html, body { background: var(--bg); color: var(--ink); }
+
+/* colours ease across a theme switch (only while switching) */
+.theming *:not(.mercury-icon),
+.theming *:not(.mercury-icon)::before,
+.theming *:not(.mercury-icon)::after {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease,
+    box-shadow 0.3s ease, fill 0.3s ease, stroke 0.3s ease !important;
+}
+
+/* ── global layers: 3D ground < FluidCursor < content ─────────────────── */
+.neural-bg { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 0; display: block; pointer-events: none; }
+
+/* ── liquid glass ─────────────────────────────────────────────────────────
+   Rule: no ancestor of .glass may keep a filter / opacity<1 / mask / clip-path
+   after its animation ends, or it becomes a backdrop root and the blur dies. */
+.glass { position: relative; isolation: isolate; border-radius: var(--r, 20px); box-shadow: var(--g-shadow); }
+.glass::before {
+  content: ""; position: absolute; inset: 0; z-index: -2; border-radius: inherit;
+  -webkit-backdrop-filter: blur(var(--g-blur)) saturate(180%);
+  backdrop-filter: blur(var(--g-blur)) saturate(180%);
+  /* the bevel + dispersion filter is attached per element by GlassRuntime */
+}
+.no-refract .glass::before { filter: none !important; }
+.glass::after {
+  /* tint + pointer sheen inside; a thin dispersion rim (rainbow edge, like thick glass) on the border box */
+  content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
+  background:
+    radial-gradient(220px circle at var(--mx, 30%) var(--my, 0%), rgb(255 255 255 / var(--sheen)), transparent 60%),
+    var(--tint, var(--g-tint));
+  box-shadow:
+    inset 0 1.5px 0 0 var(--g-rim),                  /* thick top rim highlight */
+    inset 1.25px 0 0 0 var(--disp-1),                /* dispersion: red fringe on the left edge */
+    inset -1.25px 0 0 0 var(--disp-4),               /* blue fringe on the right edge */
+    inset 0 -1.25px 0 0 var(--disp-3),               /* green along the bottom */
+    inset 0 -8px 16px -12px rgb(255 255 255 / 0.18); /* light caught in the lower rim */
+}
+:root { --disp-1: rgb(255 95 109 / 0.16); --disp-3: rgb(71 255 176 / 0.14); --disp-4: rgb(58 120 255 / 0.2); }
+.dark { --disp-1: rgb(255 95 109 / 0.22); --disp-3: rgb(71 255 176 / 0.18); --disp-4: rgb(58 120 255 / 0.28); }
+
+/* ── landing (B2 centred) ─────────────────────────────────────────────── */
+.landing { --wrap: 1280px; position: relative; width: min(var(--wrap), 100% - 32px); margin-inline: auto; font-family: var(--font-outfit), system-ui, sans-serif; }
+
+.site-nav { margin-top: 16px; height: 60px; padding: 0 10px 0 14px; display: flex; align-items: center; justify-content: space-between; --r: 999px; }
+.site-mark { display: flex; align-items: center; gap: 10px; font-weight: 500; font-size: 18px; letter-spacing: -0.01em; color: var(--ink); }
+.site-mark i { width: 32px; height: 32px; border-radius: 10px; background: var(--ink); color: var(--bg); display: grid; place-items: center; font-style: normal; font-size: 14px; font-weight: 600; }
+.site-nav ul { list-style: none; display: flex; align-items: center; gap: 6px; font-size: 15px; margin: 0; padding: 0; }
+.site-nav ul a { display: inline-flex; align-items: center; height: 44px; padding: 0 16px; border-radius: 999px; color: var(--ink-soft); transition: color 0.15s ease, background-color 0.15s ease; }
+@media (hover: hover) and (pointer: fine) { .site-nav ul a:hover { color: var(--ink); background: var(--hover-bg); } }
+.site-nav .cta { color: var(--brand-ink); background: var(--brand); font-weight: 500; transition: transform 0.12s var(--ease-out), filter 0.15s ease; }
+@media (hover: hover) and (pointer: fine) { .site-nav .cta:hover { color: var(--brand-ink); background: var(--brand); filter: brightness(1.06); } }
+.site-nav .cta:active { transform: scale(0.97); }
+.site-nav li.toggle { margin: 0 6px; display: flex; }
+
+.hero { min-height: calc(100vh - 76px); min-height: calc(100dvh - 76px); display: flex; flex-direction: column; align-items: center; text-align: center; padding: 28px 0 32px; }
+.hero-avatar { width: 176px; height: 176px; --r: 50%; padding: 10px; }
+.hero-avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; background: #fff; display: block; transform: scale(1.12); }
+.hero-notice { margin-top: 22px; --r: 999px; display: inline-flex; align-items: center; gap: 8px; height: 34px; padding: 0 14px; font-size: 14px; color: var(--ink); }
+.hero-dot { width: 8px; height: 8px; border-radius: 50%; background: #22a35a; box-shadow: 0 0 0 4px #22a35a26; animation: breathe 2.4s ease-in-out infinite; }
+@keyframes breathe { 50% { box-shadow: 0 0 0 7px #22a35a10; } }
+.hero h1 { margin-top: 18px; font-size: 76px; font-weight: 400; letter-spacing: -0.04em; line-height: 1.02; max-width: 15ch; }
+.hero h1 em { font-style: normal; color: var(--em); }
+.hero-lead { margin-top: 16px; font-size: 20px; line-height: 30px; color: var(--ink-soft); max-width: 42ch; }
+
+.tiles { margin-top: 34px; display: grid; grid-template-columns: repeat(5, 168px); gap: 12px; }
+.tile { --r: 22px; height: 136px; padding: 16px; display: flex; flex-direction: column; justify-content: space-between; text-align: left;
+  font: inherit; color: inherit; border: 0; background: none; cursor: pointer;
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s ease; }
+@media (hover: hover) and (pointer: fine) {
+  .tile:hover { transform: translateY(-2px); --sheen: var(--sheen-hover); box-shadow: 0 24px 44px -22px rgb(20 16 10 / 0.45); }
+}
+.tile:active { transform: translateY(0) scale(0.98); transition-duration: 0.08s; }
+.tile:focus-visible { outline: 2px solid var(--em); outline-offset: 3px; }
+.tile-ic { width: 38px; height: 38px; border-radius: 12px; display: grid; place-items: center; color: var(--c, var(--em));
+  background: color-mix(in oklab, var(--c, var(--em)) 16%, var(--ic-base)); }
+.tile b { display: block; font-size: 17px; font-weight: 500; color: var(--ink); }
+.tile small { font-size: 13px; color: var(--ink-soft); }
+.tile.main { --tint: color-mix(in oklab, var(--brand) 88%, transparent); --g-rim: rgb(255 255 255 / 0.6); }
+:root:not(.dark) .tile.main { --g-rim-dark: rgb(70 90 0 / 0.22); }
+.tile.main b, .tile.main small { color: var(--brand-ink); } .tile.main small { opacity: 0.85; }
+.tile.main .tile-ic { color: var(--brand-ink); background: rgb(0 0 0 / 0.1); }
+
+.hero-more { margin-top: 18px; font-size: 14px; color: var(--ink-soft); display: inline-flex; align-items: center; gap: 6px; }
+.hero-more a { color: var(--ink); text-decoration: underline; text-decoration-color: color-mix(in oklab, var(--ink) 30%, transparent); text-underline-offset: 4px; transition: text-decoration-color 0.2s ease; }
+.hero-more a:hover { text-decoration-color: var(--ink); }
+
+.hero-facts { margin-top: auto; --r: 999px; display: flex; gap: 36px; padding: 12px 26px; font-size: 14px; color: var(--ink-soft); }
+.hero-facts b { color: var(--ink); font-weight: 500; }
+
+/* entrance, once: opacity + transform only, fill BACKWARDS (see the glass rule) */
+[data-enter] > * { animation: enter 0.8s var(--ease-out) backwards; }
+[data-enter] > *:nth-child(2) { animation-delay: 0.06s; } [data-enter] > *:nth-child(3) { animation-delay: 0.12s; }
+[data-enter] > *:nth-child(4) { animation-delay: 0.18s; } [data-enter] > *:nth-child(5) { animation-delay: 0.26s; }
+[data-enter] > *:nth-child(n+6) { animation-delay: 0.34s; }
+@keyframes enter { from { opacity: 0; transform: translateY(14px); } }
+
+@media (max-width: 1023px) {
+  .hero-avatar { width: 128px; height: 128px; padding: 8px; }
+  .hero h1 { font-size: 44px; } .hero-lead { font-size: 17px; line-height: 25.5px; }
+  .tiles { grid-template-columns: 1fr 1fr; width: 100%; max-width: 520px; } .tile { height: 112px; } .tile.main { grid-column: span 2; }
+  .hero-facts { flex-direction: column; gap: 4px; --r: 22px; }
+  .site-nav ul li.hide-sm { display: none; }
+}
+
+/* ── mercury theme switch ─────────────────────────────────────────────── */
+.mercury { position: relative; width: 68px; height: 44px; flex: none; padding: 0; border: 0; border-radius: 999px; background: none; cursor: pointer;
+  touch-action: none; -webkit-tap-highlight-color: transparent; user-select: none; }
+.mercury:focus-visible { outline: 2px solid var(--em); outline-offset: 3px; }
+.mercury-track { position: absolute; inset: 4px 0; border-radius: inherit; display: flex; align-items: center; justify-content: space-between; padding: 0 11px;
+  background: var(--merc-track);
+  box-shadow: inset 0 2px 5px rgb(0 0 0 / var(--merc-inset)), inset 0 -1px 0 rgb(255 255 255 / 0.3), 0 0 0 1px var(--merc-rim);
+  transition: box-shadow 0.2s ease; }
+@media (hover: hover) and (pointer: fine) {
+  .mercury:hover .mercury-track { box-shadow: inset 0 2px 5px rgb(0 0 0 / var(--merc-inset)), inset 0 -1px 0 rgb(255 255 255 / 0.3), 0 0 0 1px color-mix(in oklab, var(--em) 45%, transparent); }
+}
+.mercury-icon { width: 14px; height: 14px; color: var(--ink-soft); transition: opacity 0.2s var(--ease-out), transform 0.25s var(--ease-out); }
+.mercury:not(.is-dark) .mercury-icon.sun,
+.mercury.is-dark .mercury-icon.moon { opacity: 0; transform: scale(0.6) rotate(-40deg); }
+.mercury-goo { position: absolute; inset: 0; top: 4px; bottom: 4px; pointer-events: none; filter: url(#mercury-goo) drop-shadow(0 3px 3px rgb(0 0 0 / 0.35)); }
+.mercury-drop, .mercury-shine { position: absolute; top: 5px; left: 5px; width: 26px; height: 26px; border-radius: 50%; }
+.mercury-drop {
+  background:
+    radial-gradient(120% 80% at 50% 115%, var(--merc-env) 0%, transparent 55%),
+    linear-gradient(165deg, #fdfeff 0%, #c9ced6 22%, #6d747e 47%, #3b4047 58%, #9aa1ab 78%, #e9edf2 100%);
+}
+.mercury-shine { pointer-events: none;
+  background:
+    radial-gradient(40% 30% at 34% 26%, rgb(255 255 255 / 0.95), rgb(255 255 255 / 0) 72%),
+    radial-gradient(34% 14% at 60% 84%, rgb(255 255 255 / 0.55), transparent 80%);
+  box-shadow: inset 0 0 0 0.5px rgb(255 255 255 / 0.55), inset 0 -3px 4px rgb(0 0 0 / 0.28), inset 0 2px 2px rgb(255 255 255 / 0.7); }
+.mercury > .mercury-shine { top: 9px; }
+.mercury-goo, .mercury-shine { transition: opacity 0.2s ease; }
+.mercury.is-pending .mercury-goo, .mercury.is-pending .mercury-shine { opacity: 0; }
+
+/* ── chat page chrome on the shared background ────────────────────────── */
+.chat-fade-top { background: linear-gradient(to bottom, var(--bg) 0%, color-mix(in oklab, var(--bg) 92%, transparent) 35%, color-mix(in oklab, var(--bg) 70%, transparent) 60%, transparent 100%); }
+.chat-fade-bottom { background: linear-gradient(to top, var(--bg) 0%, color-mix(in oklab, var(--bg) 85%, transparent) 60%, transparent 100%); }
+.chip { --r: 14px; border: 0; background: none; color: var(--ink); cursor: pointer; transition: transform 0.12s var(--ease-out); }
+.chip:active { transform: scale(0.97); }
+@media (hover: hover) and (pointer: fine) { .chip:hover { --sheen: var(--sheen-hover); } }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-enter] > *, .hero-dot { animation: none !important; }
+  .mercury-icon { transition: opacity 0.2s ease; transform: none !important; }
+}

@@ -1,0 +1,115 @@
+/* B2 centred · glass edition. Shared by every b2-glass-*.html variant.
+   Each variant sets the theme tokens on :root; everything below reads them. */
+:root {
+  --font: "Outfit", system-ui, sans-serif;
+  --wrap: 1280px;
+  /* theme tokens (overridden per variant) */
+  --bg: #f3efe3; --ink: #111111; --muted: #5d5a52; --accent: #d9541e; --accent-ink: #ffffff;
+  /* glass tokens */
+  --g-tint: rgb(255 255 255 / .42);
+  --g-tint-strong: rgb(255 255 255 / .6);
+  --g-rim: rgb(255 255 255 / .75);
+  --g-rim-dark: rgb(255 255 255 / .25);
+  --g-shadow: 0 18px 40px -22px rgb(20 16 10 / .35);
+  --g-blur: 10px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--bg); color: var(--ink); font-family: var(--font); -webkit-font-smoothing: antialiased; }
+body { min-height: 100vh; overflow-x: hidden; }
+
+/* ---------- layers: 3D ground < fluid cursor < content ---------- */
+#bg3d { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 0; display: block; }
+#fluid { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; }
+.wrap { position: relative; z-index: 2; width: min(var(--wrap), 100% - 32px); margin-inline: auto; }
+
+/* ---------- liquid glass (mirrors liquid-glass-react: blur + edge refraction + rim light) ---------- */
+.glass { position: relative; isolation: isolate; border-radius: var(--r, 20px); box-shadow: var(--g-shadow); }
+.glass::before { /* refracted, blurred backdrop */
+  content: ""; position: absolute; inset: 0; z-index: -2; border-radius: inherit; overflow: hidden;
+  -webkit-backdrop-filter: blur(var(--g-blur)) saturate(180%);
+  backdrop-filter: blur(var(--g-blur)) saturate(180%);
+  filter: url(#liquid);
+}
+.no-refract .glass::before { filter: none; } /* Safari / Firefox: blur only */
+.glass::after { /* tint + rim light + pointer sheen */
+  content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
+  background:
+    radial-gradient(220px circle at var(--mx, 30%) var(--my, 0%), rgb(255 255 255 / var(--sheen, .22)), transparent 60%),
+    var(--tint, var(--g-tint));
+  box-shadow:
+    inset 1.5px 1.5px 0 0 var(--g-rim),
+    inset -1px -1px 0 0 var(--g-rim-dark),
+    inset 0 0 0 1px rgb(255 255 255 / .12);
+  transition: background .3s ease;
+}
+
+/* ---------- nav ---------- */
+.nav { margin-top: 16px; height: 60px; padding: 0 10px 0 14px; display: flex; align-items: center; justify-content: space-between; --r: 999px; }
+.mark { display: flex; align-items: center; gap: 10px; font-weight: 500; font-size: 18px; letter-spacing: -0.01em; color: var(--ink); text-decoration: none; }
+.mark i { width: 32px; height: 32px; border-radius: 10px; background: var(--ink); color: var(--bg); display: grid; place-items: center; font-style: normal; font-size: 14px; font-weight: 600; }
+.nav ul { list-style: none; display: flex; align-items: center; gap: 6px; font-size: 15px; }
+.nav ul a { display: inline-flex; align-items: center; height: 44px; padding: 0 16px; border-radius: 999px; color: var(--muted); text-decoration: none; transition: color .15s ease, background .15s ease; }
+.nav ul a:hover { color: var(--ink); background: rgb(255 255 255 / .18); }
+.nav .cta { color: var(--accent-ink); background: var(--accent); font-weight: 500; }
+.nav .cta:hover { color: var(--accent-ink); background: var(--accent); filter: brightness(1.06); }
+.nav .cta:active { transform: scale(.97); }
+
+/* ---------- hero ---------- */
+.hero { min-height: calc(100vh - 76px); display: flex; flex-direction: column; align-items: center; text-align: center; padding: 28px 0 32px; }
+.avatar { width: 176px; height: 176px; --r: 50%; padding: 10px; }
+.avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; background: #fff; display: block; }
+.notice { margin-top: 22px; --r: 999px; display: inline-flex; align-items: center; gap: 8px; height: 34px; padding: 0 14px; font-size: 14px; color: var(--ink); }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: #22a35a; box-shadow: 0 0 0 4px #22a35a26; animation: breathe 2.4s ease-in-out infinite; }
+@keyframes breathe { 50% { box-shadow: 0 0 0 7px #22a35a10; } }
+h1 { margin-top: 18px; font-size: 76px; font-weight: 400; letter-spacing: -0.04em; line-height: 1.02; max-width: 15ch; }
+h1 em { font-style: normal; color: var(--accent); }
+.lead { margin-top: 16px; font-size: 20px; line-height: 30px; color: var(--muted); max-width: 42ch; }
+
+/* ---------- question tiles ---------- */
+.tiles { margin-top: 34px; display: grid; grid-template-columns: repeat(5, 168px); gap: 12px; }
+.tile { --r: 22px; height: 136px; padding: 16px; display: flex; flex-direction: column; justify-content: space-between; text-align: left;
+  font: inherit; color: inherit; border: 0; background: none; cursor: pointer;
+  transition: transform .2s cubic-bezier(.2,.8,.2,1), box-shadow .2s ease; }
+.tile:hover { transform: translateY(-2px); --sheen: .38; box-shadow: 0 24px 44px -22px rgb(20 16 10 / .45); }
+.tile:active { transform: translateY(0) scale(.98); transition-duration: .08s; }
+.tile:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.tile .ic { width: 38px; height: 38px; border-radius: 12px; display: grid; place-items: center; background: var(--ic-bg, rgb(255 255 255 / .55)); }
+.tile .ic svg { width: 19px; height: 19px; }
+.tile .ic { color: var(--c, var(--accent)); --ic-bg: color-mix(in oklab, var(--c, var(--accent)) 16%, var(--ic-base, rgb(255 255 255 / .5))); }
+.tile.main .ic { color: var(--accent-ink); }
+
+/* mockup-only variant switcher */
+.switch { position: fixed; right: 16px; bottom: 16px; z-index: 5; --r: 999px; display: flex; gap: 2px; padding: 4px; font-size: 13px; }
+.switch a { display: grid; place-items: center; min-width: 44px; height: 36px; padding: 0 12px; border-radius: 999px; color: var(--muted); text-decoration: none; }
+.switch a[aria-current] { background: var(--ink); color: var(--bg); }
+.tile b { display: block; font-size: 17px; font-weight: 500; color: var(--ink); }
+.tile span { font-size: 13px; color: var(--muted); }
+.tile.main { --tint: color-mix(in oklab, var(--accent) 82%, transparent); --g-rim: rgb(255 255 255 / .55); }
+.tile.main b, .tile.main span { color: var(--accent-ink); } .tile.main span { opacity: .85; }
+.tile.main .ic { --ic-bg: rgb(255 255 255 / .2); }
+
+.more { margin-top: 18px; font-size: 14px; color: var(--muted); display: inline-flex; align-items: center; gap: 6px; }
+.more a { color: var(--ink); text-decoration: underline; text-decoration-color: color-mix(in oklab, var(--ink) 30%, transparent); text-underline-offset: 4px; transition: text-decoration-color .2s ease; }
+.more a:hover { text-decoration-color: var(--ink); }
+
+.facts { margin-top: auto; --r: 999px; display: flex; gap: 36px; padding: 12px 26px; font-size: 14px; color: var(--muted); }
+.facts b { color: var(--ink); font-weight: 500; }
+
+/* ---------- entrance, once on load ---------- */
+/* fill-mode BACKWARDS + no filter in the keyframes: a lingering filter on a parent makes it a
+   "backdrop root" and kills every glass blur inside it. */
+[data-enter] > * { animation: enter .8s cubic-bezier(.19,1,.22,1) backwards; }
+[data-enter] > *:nth-child(2) { animation-delay: .06s; } [data-enter] > *:nth-child(3) { animation-delay: .12s; }
+[data-enter] > *:nth-child(4) { animation-delay: .18s; } [data-enter] > *:nth-child(5) { animation-delay: .26s; }
+[data-enter] > *:nth-child(n+6) { animation-delay: .34s; }
+@keyframes enter { from { opacity: 0; transform: translateY(14px); } }
+
+/* ---------- responsive ---------- */
+@media (max-width: 1023px) {
+  .avatar { width: 128px; height: 128px; padding: 8px; } h1 { font-size: 44px; } .lead { font-size: 17px; line-height: 25.5px; }
+  .tiles { grid-template-columns: 1fr 1fr; width: 100%; max-width: 520px; } .tile { height: 112px; } .tile.main { grid-column: span 2; }
+  .facts { flex-direction: column; gap: 4px; border-radius: 22px; --r: 22px; }
+  .nav ul li:not(:last-child) { display: none; }
+  .switch { position: relative; right: auto; bottom: auto; margin: 8px auto 24px; width: max-content; }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }

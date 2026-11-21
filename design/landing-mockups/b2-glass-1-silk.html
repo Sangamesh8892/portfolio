@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B2 Glass · 1 Silk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="glass/b2-glass.css">
+<style>
+/* Theme 1 · Cream + Black + Burnt Orange. 3D: lit silk that folds under the cursor. */
+:root {
+  --bg: #f3efe3; --ink: #111111; --muted: #5d5a52; --accent: #d9541e; --accent-ink: #ffffff;
+  --g-tint: rgb(255 252 245 / .42); --g-rim: rgb(255 255 255 / .85); --g-rim-dark: rgb(120 70 40 / .12);
+  --g-shadow: 0 18px 40px -24px rgb(90 40 10 / .35);
+}
+body { background: radial-gradient(120% 80% at 50% 110%, #eab99a, var(--bg) 60%); } /* shows if WebGL is off */
+</style>
+<script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }</script>
+</head>
+<body>
+<!-- B2 centred · glass edition · GenAI / SAP agents copy · theme 1 cream/orange · 3D silk · real FluidCursor on top · buttons only -->
+<canvas id="bg3d" aria-hidden="true"></canvas>
+<canvas id="fluid" aria-hidden="true"></canvas>
+
+<div class="wrap">
+  <nav class="nav glass">
+    <a class="mark" href="#"><i>S</i>Sangamesh</a>
+    <ul><li><a href="#">Agents</a></li><li><a href="#">Résumé</a></li><li><a class="cta" href="#">Email me</a></li></ul>
+  </nav>
+
+  <section class="hero" data-enter>
+    <div class="avatar glass"><img src="memoji.png" alt="Sangamesh's memoji"></div>
+    <span class="notice glass"><span class="dot"></span>GenAI engineer · AI agents for SAP</span>
+    <h1>Hi, I'm Sangamesh.<br>I build <em>AI&nbsp;agents for&nbsp;SAP</em></h1>
+    <p class="lead">Functional spec in, technical spec out, grounded in client standards and live SAP&nbsp;ADT context.</p>
+    <div class="tiles">
+      <button class="tile glass main"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2M20 14h2M15 13v2M9 13v2"/></svg></div><div><b>Agents</b><span>FSD → TSD &amp; more</span></div></button>
+      <button class="tile glass" style="--c:#1f8a8a"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg></div><div><b>Me</b><span>Who I am</span></div></button>
+      <button class="tile glass" style="--c:#2f6fd6"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 2 10 5-10 5L2 7z"/><path d="m2 17 10 5 10-5M2 12l10 5 10-5"/></svg></div><div><b>Stack</b><span>Agents, RAG, cloud</span></div></button>
+      <button class="tile glass" style="--c:#b0477f"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></svg></div><div><b>Certs</b><span>Claude · AWS</span></div></button>
+      <button class="tile glass" style="--c:#a87a14"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg></div><div><b>Contact</b><span>Let's talk</span></div></button>
+    </div>
+    <span class="more">or browse <a href="#">all 13 questions</a> →</span>
+    <div class="facts glass"><span><b>80–90%</b> accurate TSD drafts</span><span><b>3</b> AI certifications</span><span><b>SAP AI Core</b> · Azure · GCP</span></div>
+  </section>
+</div>
+
+<nav class="switch glass" aria-label="Mockup variants"><a href="b2-glass-1-silk.html" aria-current="page">1 Silk</a><a href="b2-glass-2-orbs.html">2 Orbs</a><a href="b2-glass-3-field.html">3 Field</a></nav>
+
+<script src="glass/fluid-cursor.js"></script>
+<script src="glass/glass.js"></script>
+<script type="module">
+  import { start } from './glass/bg3d.js';
+  start('silk', { bg: '#f3efe3', mid: '#eab99a', accent: '#d9541e' });
+</script>
+</body>
+</html>

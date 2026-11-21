@@ -5,8 +5,8 @@ import dynamic from 'next/dynamic';
 import { useSearchParams } from 'next/navigation';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
-import ChatBottombar from '@/components/chat/chat-bottombar';
 import ChatMessageContent from '@/components/chat/chat-message-content';
+import MercuryToggle from '@/components/site/MercuryToggle';
 import { SimplifiedChatView } from '@/components/chat/simple-chat-view';
 import {
   ChatBubble,
@@ -83,8 +83,8 @@ const Chat = () => {
   const searchParams = useSearchParams();
   const initialQuery = searchParams.get('query');
   const initialAnswerId = searchParams.get('answer');
+  const openMore = searchParams.get('more') === '1';
 
-  const [input, setInput] = useState('');
   const [userMessage, setUserMessage] = useState(null);
   const [reply, setReply] = useState(null);
   const [isThinking, setIsThinking] = useState(false);
@@ -161,36 +161,27 @@ const Chat = () => {
 
   useEffect(() => clearTimers, []);
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-    if (!input.trim() || isBusy) return;
-    submitQuery(input);
-    setInput('');
-  };
-
   const isEmptyState = !userMessage;
   const headerHeight = hasActiveTool ? 100 : 180;
 
   return (
     <div className="relative h-screen overflow-hidden">
-      <div className="absolute top-6 right-8 z-51 flex flex-col-reverse items-center justify-center gap-1 md:flex-row">
+      <div className="absolute top-5 right-4 z-51 flex items-center gap-2 md:top-6 md:right-8">
         <WelcomeModal
           trigger={
-            <div className="hover:bg-accent cursor-pointer rounded-2xl px-3 py-1.5">
-              <Info className="text-accent-foreground h-8" />
+            <div
+              className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full hover:bg-[var(--hover-bg)]"
+              aria-label="About this portfolio"
+            >
+              <Info className="h-6 w-6 text-[var(--ink-soft)]" />
             </div>
           }
         />
+        <MercuryToggle />
       </div>
 
-      {/* Fixed Avatar Header with Gradient */}
-      <div
-        className="fixed top-0 right-0 left-0 z-50"
-        style={{
-          background:
-            'linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.95) 30%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 0) 100%)',
-        }}
-      >
+      {/* Fixed Avatar Header, fading into the shared background */}
+      <div className="chat-fade-top fixed top-0 right-0 left-0 z-50">
         <div
           className={`transition-all duration-300 ease-in-out ${hasActiveTool ? 'pt-6 pb-0' : 'py-6'}`}
         >
@@ -243,16 +234,25 @@ const Chat = () => {
         </div>
 
         {/* Fixed Bottom Bar */}
-        <div className="sticky bottom-0 bg-white px-2 pt-3 md:px-0 md:pb-4">
+        <div className="chat-fade-bottom sticky bottom-0 px-2 pt-8 pb-4 md:px-0 md:pb-6">
           <div className="relative flex flex-col items-center gap-3">
-            <HelperBoost submitQuery={submitQuery} />
-            <ChatBottombar
-              input={input}
-              handleInputChange={(e) => setInput(e.target.value)}
-              handleSubmit={onSubmit}
-              isLoading={isBusy}
-              stop={finishTalking}
-            />
+            <AnimatePresence>
+              {isBusy && (
+                <motion.button
+                  key="skip"
+                  type="button"
+                  onClick={finishTalking}
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 6 }}
+                  transition={{ duration: 0.18, ease: [0.23, 1, 0.32, 1] }}
+                  className="chip glass px-4 py-2 text-sm"
+                >
+                  Skip to the answer
+                </motion.button>
+              )}
+            </AnimatePresence>
+            <HelperBoost submitQuery={submitQuery} defaultOpen={openMore} />
           </div>
         </div>
       </div>

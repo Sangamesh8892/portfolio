@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { ChevronRight } from 'lucide-react';
+import CopyEmailButton from '@/components/dock/CopyEmailButton';
 import { contact } from '@/data/portfolio';
 
 export function Contact() {
@@ -20,21 +20,13 @@ export function Contact() {
           <h2 className="text-foreground text-3xl font-semibold md:text-4xl">
             Contacts
           </h2>
-          <span className="mt-2 sm:mt-0">{contactInfo.handle}</span>
+          {contactInfo.handle && <span className="mt-2 sm:mt-0">{contactInfo.handle}</span>}
         </div>
 
-        {/* Email Section */}
+        {/* Email: copy only, never printed or linked */}
         <div className="mt-8 flex flex-col md:mt-10">
-          <div
-            className="group mb-5 cursor-pointer"
-            onClick={() => openLink(`mailto:${contactInfo.email}`)}
-          >
-            <div className="flex items-center gap-1">
-              <span className="text-base font-medium text-blue-500 hover:underline sm:text-lg">
-                {contactInfo.email}
-              </span>
-              <ChevronRight className="h-5 w-5 text-blue-500 transition-transform duration-300 group-hover:translate-x-1" />
-            </div>
+          <div className="mb-6">
+            <CopyEmailButton />
           </div>
 
           {/* Social Links */}

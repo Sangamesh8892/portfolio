@@ -1,4 +1,3 @@
-import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 import {
@@ -9,6 +8,8 @@ import {
 } from '@radix-ui/react-tooltip';
 import { motion } from 'framer-motion';
 import {
+  Award,
+  Bot,
   BriefcaseBusiness,
   ChevronDown,
   ChevronRight,
@@ -38,6 +39,8 @@ const ICONS = {
   code: CodeIcon,
   graduation: GraduationCapIcon,
   mail: MailIcon,
+  bot: Bot,
+  award: Award,
 };
 
 const specialQuestions = questionDrawer.highlighted;
@@ -62,9 +65,9 @@ const AnimatedChevron = () => {
   );
 };
 
-export default function HelperBoost({ submitQuery }) {
+export default function HelperBoost({ submitQuery, defaultOpen = false }) {
   const [isVisible, setIsVisible] = useState(true);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(defaultOpen);
 
   const handleQuestionClick = (question, answerId) => {
     submitQuery?.(question, answerId);
@@ -95,7 +98,7 @@ export default function HelperBoost({ submitQuery }) {
           >
             <button
               onClick={toggleVisibility}
-              className="flex items-center gap-1 px-3 py-1 text-xs text-gray-500 transition-colors hover:text-gray-700"
+              className="flex items-center gap-1 px-3 py-1 text-xs text-[var(--ink-soft)] transition-colors hover:text-[var(--ink)]"
             >
               {isVisible ? (
                 <>
@@ -122,17 +125,17 @@ export default function HelperBoost({ submitQuery }) {
                   ({ label, answerId, question, color, icon }) => {
                     const Icon = ICONS[icon];
                     return (
-                      <Button
+                      <button
                         key={label}
+                        type="button"
                         onClick={() => handleQuestionClick(question, answerId)}
-                        variant="outline"
-                        className="border-border hover:bg-border/30 h-auto min-w-[100px] flex-shrink-0 cursor-pointer rounded-xl border bg-white/80 px-4 py-3 shadow-none backdrop-blur-sm transition-none active:scale-95"
+                        className="chip glass h-auto min-w-[100px] flex-shrink-0 px-4 py-3"
                       >
-                        <div className="flex items-center gap-3 text-gray-700">
+                        <span className="flex items-center gap-3">
                           <Icon size={18} strokeWidth={2} color={color} />
                           <span className="text-sm font-medium">{label}</span>
-                        </div>
-                      </Button>
+                        </span>
+                      </button>
                     );
                   }
                 )}
@@ -146,10 +149,10 @@ export default function HelperBoost({ submitQuery }) {
                         aria-label="More questions"
                       >
                         <motion.div
-                          className="hover:bg-border/30 flex h-auto cursor-pointer items-center space-x-1 rounded-xl border border-neutral-200 bg-white/80 px-4 py-3 text-sm backdrop-blur-sm transition-all duration-200 dark:border-neutral-800 dark:bg-neutral-900"
+                          className="chip glass flex h-auto items-center px-4 py-3 text-sm"
                           whileTap={{ scale: 0.98 }}
                         >
-                          <div className="flex items-center gap-3 text-gray-700">
+                          <div className="flex items-center gap-3">
                             <CircleEllipsis
                               className="h-[20px] w-[18px]"
                               //style={{ color: '#3B82F6' }}
@@ -173,12 +176,12 @@ export default function HelperBoost({ submitQuery }) {
         {/* Drawer Content */}
         <Drawer.Portal>
           <Drawer.Overlay className="fixed inset-0 z-100 bg-black/60 backdrop-blur-xs" />
-          <Drawer.Content className="fixed right-0 bottom-0 left-0 z-100 mt-24 flex h-[80%] flex-col rounded-t-[10px] bg-gray-100 outline-none lg:h-[60%]">
-            <div className="flex-1 overflow-y-auto rounded-t-[10px] bg-white p-4">
+          <Drawer.Content className="bg-background fixed right-0 bottom-0 left-0 z-100 mt-24 flex h-[80%] flex-col rounded-t-[20px] outline-none lg:h-[60%]">
+            <div className="bg-background flex-1 overflow-y-auto rounded-t-[20px] p-4">
               <div className="mx-auto max-w-md space-y-4">
                 <div
                   aria-hidden
-                  className="mx-auto mb-8 h-1.5 w-12 flex-shrink-0 rounded-full bg-gray-300"
+                  className="mx-auto mb-8 h-1.5 w-12 flex-shrink-0 rounded-full bg-[var(--ink-soft)] opacity-40"
                 />
                 <div className="mx-auto w-full max-w-md">
                   <div className="space-y-8 pb-16">
@@ -207,7 +210,7 @@ function CategorySection({ name, Icon, questions, onQuestionClick }) {
     <div className="space-y-3">
       <div className="flex items-center gap-2.5 px-1">
         <Icon className="h-5 w-5" />
-        <Drawer.Title className="text-[22px] font-medium text-gray-900">
+        <Drawer.Title className="text-foreground text-[22px] font-medium">
           {name}
         </Drawer.Title>
       </div>
@@ -238,22 +241,18 @@ function QuestionItem({ question, onClick, isSpecial }) {
         'text-md px-6 py-4 text-left font-normal',
         'transition-all',
         'focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500',
-        isSpecial ? 'bg-black' : 'bg-[#F7F8F9]'
+        isSpecial
+          ? 'bg-[var(--ink)] text-[var(--bg)]'
+          : 'bg-[var(--hover-bg)] hover:bg-[color-mix(in_oklab,var(--ink)_10%,transparent)]'
       )}
       onClick={onClick}
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
-      whileHover={{
-        backgroundColor: isSpecial ? undefined : '#F0F0F2',
-      }}
-      whileTap={{
-        scale: 0.98,
-        backgroundColor: isSpecial ? undefined : '#E8E8EA',
-      }}
+      whileTap={{ scale: 0.98 }}
     >
       <div className="flex items-center">
-        {isSpecial && <Sparkles className="mr-2 h-4 w-4 text-white" />}
-        <span className={isSpecial ? 'font-medium text-white' : ''}>
+        {isSpecial && <Sparkles className="mr-2 h-4 w-4" />}
+        <span className={isSpecial ? 'font-medium' : ''}>
           {question}
         </span>
       </div>
@@ -268,7 +267,7 @@ function QuestionItem({ question, onClick, isSpecial }) {
         <ChevronRight
           className={cn(
             'h-5 w-5 shrink-0',
-            isSpecial ? 'text-white' : 'text-primary'
+            isSpecial ? 'text-[var(--bg)]' : 'text-[var(--em)]'
           )}
         />
       </motion.div>

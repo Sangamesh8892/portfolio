@@ -89,9 +89,10 @@ export default function WelcomeModal({ trigger }) {
                   </h3>
                   <p className="text-accent-foreground text-base leading-relaxed">
                     {/* TODO: your words */}
-                    An <strong>interactive portfolio</strong> you can chat with.
+                    An <strong>interactive portfolio</strong> you explore one
+                    question at a time.
                     <br /> Whether you're a recruiter, a friend, or just
-                    curious, tap a question or type your own!
+                    curious, tap a question to jump straight to the answer.
                   </p>
                 </div>
 
@@ -117,7 +118,7 @@ export default function WelcomeModal({ trigger }) {
                 className="h-auto rounded-full px-4 py-3"
                 size="sm"
               >
-                Start Chatting
+                Start exploring
               </Button>
               <div
                 className="mt-6 flex cursor-pointer flex-wrap gap-1 text-center text-sm"

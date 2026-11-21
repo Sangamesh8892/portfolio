@@ -1,13 +1,17 @@
+import FluidCursor from '@/components/FluidCursor';
+import GlassRuntime from '@/components/site/GlassRuntime';
+import NeuralBackground from '@/components/site/NeuralBackground';
+import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from '@/components/ui/sonner';
 import { cn } from '@/lib/utils';
-import { Inter } from 'next/font/google';
+import { Outfit } from 'next/font/google';
 import { profile, site } from '@/data/portfolio';
 import './globals.css';
 
-// Load Inter font for non-Apple devices
-const inter = Inter({
+const outfit = Outfit({
   subsets: ['latin'],
-  variable: '--font-inter',
+  variable: '--font-outfit',
+  display: 'swap',
 });
 
 export const metadata = {
@@ -37,6 +41,13 @@ export const metadata = {
   },
 };
 
+export const viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#f4f6fa' },
+    { media: '(prefers-color-scheme: dark)', color: '#030407' },
+  ],
+};
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
@@ -50,11 +61,24 @@ export default function RootLayout({ children }) {
       <body
         className={cn(
           'bg-background min-h-screen font-sans antialiased',
-          inter.variable
+          outfit.variable
         )}
       >
-        <main className="flex min-h-screen flex-col">{children}</main>
-        <Toaster />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          storageKey="b2-theme"
+        >
+          {/* shared on every page: 3D ground, then the (unchanged) fluid cursor, then content */}
+          <GlassRuntime />
+          <NeuralBackground />
+          <FluidCursor />
+          <main className="relative z-10 flex min-h-screen flex-col">
+            {children}
+          </main>
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   );

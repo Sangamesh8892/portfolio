@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B2 Glass · 2 Orbs</title>
+<script>
+  /* theme before first paint: saved choice, else the system setting */
+  (function () {
+    var t = null;
+    try { t = localStorage.getItem('b2-theme'); } catch (e) {}
+    document.documentElement.dataset.theme = t || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="glass/b2-glass.css">
+<style>
+/* Theme 4 · Electrify (dark) + its light counterpart. 3D: neural cores, agent graph, token pulses, cursor attention. */
+:root {
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --bg: #030407; --ink: #f2f5fb; --muted: #9aa3b5; --accent: #d4ff24; --accent-ink: #05070c; --em: #d4ff24;
+  --g-tint: rgb(16 22 40 / .38); --g-rim: rgb(255 255 255 / .32); --g-rim-dark: rgb(255 255 255 / .06);
+  --g-shadow: 0 22px 50px -26px rgb(0 0 0 / .8); --ic-base: rgb(255 255 255 / .06); --hover-bg: rgb(255 255 255 / .08);
+}
+:root[data-theme="light"] {
+  --bg: #f4f6fa; --ink: #0a0d14; --muted: #545c6e; --accent: #d4ff24; --accent-ink: #05070c; --em: #155bc9;
+  --g-tint: rgb(255 255 255 / .55); --g-rim: rgb(255 255 255 / .95); --g-rim-dark: rgb(20 40 90 / .10);
+  --g-shadow: 0 18px 40px -24px rgb(15 30 70 / .30); --ic-base: rgb(255 255 255 / .65); --hover-bg: rgb(10 20 50 / .06);
+}
+body { background: radial-gradient(60% 50% at 15% 20%, color-mix(in oklab, #155bc9 35%, var(--bg)), transparent), var(--bg); } /* shows if WebGL is off */
+h1 em { color: var(--em); }
+.nav ul a:hover { background: var(--hover-bg); }
+.glass { --sheen: .08; } .tile:hover { --sheen: .16; }
+:root[data-theme="light"] .glass { --sheen: .35; } :root[data-theme="light"] .tile:hover { --sheen: .6; }
+.tile.main { --tint: color-mix(in oklab, var(--accent) 88%, transparent); --g-rim: rgb(255 255 255 / .6); }
+:root[data-theme="light"] .tile.main { --g-rim-dark: rgb(70 90 0 / .22); }
+.tile.main .ic { --ic-bg: rgb(0 0 0 / .1); }
+
+/* theme toggle: icon crossfade + small rotate, strong ease-out, 200ms */
+.theme-btn { position: relative; width: 44px; height: 44px; border: 0; border-radius: 999px; background: transparent; color: var(--muted); cursor: pointer;
+  display: grid; place-items: center; transition: transform .12s var(--ease-out), background-color .2s ease, color .2s ease; }
+@media (hover: hover) and (pointer: fine) { .theme-btn:hover { color: var(--ink); background: var(--hover-bg); } }
+.theme-btn:active { transform: scale(.94); }
+.theme-btn:focus-visible { outline: 2px solid var(--em); outline-offset: 2px; }
+.theme-btn svg { position: absolute; width: 20px; height: 20px; transition: opacity .2s var(--ease-out), transform .2s var(--ease-out); }
+.theme-btn .sun { opacity: 0; transform: rotate(-60deg) scale(.9); }
+:root[data-theme="light"] .theme-btn .sun { opacity: 1; transform: none; }
+:root[data-theme="light"] .theme-btn .moon { opacity: 0; transform: rotate(60deg) scale(.9); }
+
+/* colours ease across a theme switch (only while switching) */
+.theming *, .theming *::before, .theming *::after, .theming body {
+  transition: background-color .25s ease, color .25s ease, border-color .25s ease, box-shadow .25s ease, opacity .2s var(--ease-out), transform .2s var(--ease-out) !important;
+}
+@media (max-width: 1023px) { .nav ul li.keep { display: block; } }
+@media (prefers-reduced-motion: reduce) { .theme-btn svg { transition: opacity .2s ease !important; transform: none !important; } }
+</style>
+<script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }</script>
+</head>
+<body>
+<!-- B2 centred · glass edition · GenAI / SAP agents copy · theme 4 Electrify dark + light · 3D neural cores + agent graph · real FluidCursor on top · buttons only -->
+<canvas id="bg3d" aria-hidden="true"></canvas>
+<canvas id="fluid" aria-hidden="true"></canvas>
+
+<div class="wrap">
+  <nav class="nav glass">
+    <a class="mark" href="#"><i>S</i>Sangamesh</a>
+    <ul>
+      <li><a href="#">Agents</a></li>
+      <li><a href="#">Résumé</a></li>
+      <li class="keep"><button class="theme-btn" type="button" aria-label="Switch to light theme">
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2m-7.07-14.93 1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </button></li>
+      <li><a class="cta" href="#">Email me</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero" data-enter>
+    <div class="avatar glass"><img src="memoji.png" alt="Sangamesh's memoji"></div>
+    <span class="notice glass"><span class="dot"></span>GenAI engineer · AI agents for SAP</span>
+    <h1>Hi, I'm Sangamesh.<br>I build <em>AI&nbsp;agents for&nbsp;SAP</em></h1>
+    <p class="lead">Functional spec in, technical spec out, grounded in client standards and live SAP&nbsp;ADT context.</p>
+    <div class="tiles">
+      <button class="tile glass main"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2M20 14h2M15 13v2M9 13v2"/></svg></div><div><b>Agents</b><span>FSD → TSD &amp; more</span></div></button>
+      <button class="tile glass" style="--c:#3fb8b2"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg></div><div><b>Me</b><span>Who I am</span></div></button>
+      <button class="tile glass" style="--c:#4f86ff"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 2 10 5-10 5L2 7z"/><path d="m2 17 10 5 10-5M2 12l10 5 10-5"/></svg></div><div><b>Stack</b><span>Agents, RAG, cloud</span></div></button>
+      <button class="tile glass" style="--c:#e0679f"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></svg></div><div><b>Certs</b><span>Claude · AWS</span></div></button>
+      <button class="tile glass" style="--c:#d6a533"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg></div><div><b>Contact</b><span>Let's talk</span></div></button>
+    </div>
+    <span class="more">or browse <a href="#">all 13 questions</a> →</span>
+    <div class="facts glass"><span><b>80–90%</b> accurate TSD drafts</span><span><b>3</b> AI certifications</span><span><b>SAP AI Core</b> · Azure · GCP</span></div>
+  </section>
+</div>
+
+<nav class="switch glass" aria-label="Mockup variants"><a href="b2-glass-1-silk.html">1 Silk</a><a href="b2-glass-2-orbs.html" aria-current="page">2 Orbs</a><a href="b2-glass-2-orbs-v1.html">Orbs v1</a><a href="b2-glass-3-field.html">3 Field</a></nav>
+
+<script src="glass/fluid-cursor.js"></script>
+<script src="glass/glass.js"></script>
+<script>
+  (function () {
+    var root = document.documentElement, btn = document.querySelector('.theme-btn');
+    function sync() { btn.setAttribute('aria-label', root.dataset.theme === 'light' ? 'Switch to dark theme' : 'Switch to light theme'); }
+    sync();
+    btn.addEventListener('click', function () {
+      var next = root.dataset.theme === 'light' ? 'dark' : 'light';
+      root.classList.add('theming');
+      root.dataset.theme = next;
+      try { localStorage.setItem('b2-theme', next); } catch (e) {}
+      sync();
+      dispatchEvent(new Event('themechange'));
+      setTimeout(function () { root.classList.remove('theming'); }, 320);
+    });
+  })();
+</script>
+<script type="module">
+  import { start } from './glass/bg3d.js';
+  start('neural', {
+    dark:  { bg: '#030407', core: '#3a78ff', coreHot: '#d4ff24', node: '#6c84b8', edge: '#2c3f6b', hot: '#d4ff24', pulse: '#e8ff8a', additive: true, alpha: 1, glow: .45 },
+    light: { bg: '#f4f6fa', core: '#155bc9', coreHot: '#7fae00', node: '#8f9bb5', edge: '#b4bfd4', hot: '#155bc9', pulse: '#155bc9', additive: false, alpha: .9, glow: .22 },
+  });
+</script>
+</body>
+</html>

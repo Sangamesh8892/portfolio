@@ -1,6 +1,7 @@
 'use client';
 
-import { availability, contact, profile } from '@/data/portfolio';
+import CopyEmailButton from '@/components/dock/CopyEmailButton';
+import { availability, profile } from '@/data/portfolio';
 import { motion } from 'framer-motion';
 import { CalendarDays, Code2, Globe } from 'lucide-react';
 
@@ -99,12 +100,7 @@ const InternshipCard = () => {
       </div>
 
       <div className="mt-10 flex justify-center">
-        <a
-          href={`mailto:${contact.email}`}
-          className="cursor-pointer rounded-full bg-black px-6 py-3 font-semibold text-white transition-colors duration-300 hover:bg-zinc-800"
-        >
-          Contact me
-        </a>
+        <CopyEmailButton label="Copy my email" />
       </div>
     </motion.div>
   );

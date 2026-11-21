@@ -1,0 +1,24 @@
+{
+ "url": "http://127.0.0.1:5300/b2-centred-buttons.html",
+ "views": {
+  "desktop": {
+   "width": 1440,
+   "height": 900,
+   "navH": 0,
+   "scrollHeight": 900,
+   "screens": 1,
+   "sections": [],
+   "consoleErrors": []
+  },
+  "mobile": {
+   "width": 390,
+   "height": 844,
+   "navH": 0,
+   "scrollHeight": 1048,
+   "screens": 1.24,
+   "sections": [],
+   "consoleErrors": []
+  }
+ },
+ "at": "2026-11-20T20:41:03.082Z"
+}

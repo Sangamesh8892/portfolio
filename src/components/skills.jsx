@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { motion } from 'framer-motion';
 import { skills } from '@/data/portfolio';
-import { Code, Cpu, PenTool, Sparkles, Users } from 'lucide-react';
+import { Award, Cloud, Code, Cpu, PenTool, Search, Sparkles, Users } from 'lucide-react';
 
 const ICONS = {
   code: Code,
@@ -12,6 +12,9 @@ const ICONS = {
   pen: PenTool,
   users: Users,
   sparkles: Sparkles,
+  search: Search,
+  cloud: Cloud,
+  award: Award,
 };
 
 const Skills = () => {

@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en" data-radius="soft">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B2 · Centred, buttons only</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+/* The real FluidCursor (unchanged) renders above this page in the app. */
+.hero { position: relative; min-height: calc(100vh - 72px); display: flex; flex-direction: column; align-items: center; text-align: center; padding: 16px 0 36px; }
+.avatar { width: 184px; height: 184px; border-radius: 50%; overflow: hidden; background: #fff; box-shadow: 0 0 0 10px #ffffff99, 0 30px 60px -30px #1f6b3a55; }
+.avatar img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.12); }
+.hero .notice { margin-top: 24px; background: #fff; border: 1px solid var(--p-line); border-radius: 999px; padding: 6px 14px; }
+.hero h1 { margin-top: 18px; font-size: 76px; max-width: 15ch; }
+.hero h1 em { font-style: normal; color: var(--p-accent); }
+.hero .lead { margin-top: 16px; text-align: center; }
+
+.tiles { margin-top: 36px; display: grid; grid-template-columns: repeat(5, 168px); gap: 12px; }
+.tile { height: 132px; border-radius: 20px; background: #fffffff2; border: 1px solid var(--p-line); padding: 16px; display: flex; flex-direction: column; justify-content: space-between; text-align: left; cursor: pointer; transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+.tile:hover { transform: translateY(-2px); border-color: #d2d2d2; box-shadow: 0 14px 30px -18px #0a0a0a40; }
+.tile:active { transform: translateY(0) scale(.98); }
+.tile .ic { width: 36px; height: 36px; border-radius: 11px; display: grid; place-items: center; }
+.tile .ic svg { width: 19px; height: 19px; }
+.tile b { display: block; font-size: 17px; font-weight: 500; color: var(--p-ink); }
+.tile span { font-size: 13px; color: var(--p-muted); }
+.tile.main { background: var(--p-accent); border-color: var(--p-accent); }
+.tile.main b, .tile.main span { color: #fff; } .tile.main span { opacity: .8; }
+.tile.main .ic { background: #ffffff26 !important; }
+.more { margin-top: 18px; font-size: 14px; color: var(--p-muted); display: inline-flex; align-items: center; gap: 6px; }
+.more u { text-decoration-color: #c4c4c4; text-underline-offset: 4px; color: var(--p-ink); }
+
+.facts { margin-top: auto; display: flex; gap: 40px; font-size: 14px; color: var(--p-muted); padding-top: 28px; }
+.facts b { color: var(--p-ink); font-weight: 500; }
+@media (max-width: 1023px) {
+  .avatar { width: 128px; height: 128px; } .hero h1 { font-size: 42px; } .lead { font-size: 17px; line-height: 25.5px; }
+  .tiles { grid-template-columns: 1fr 1fr; width: 100%; } .tile { height: 112px; } .tile.main { grid-column: span 2; }
+  .facts { flex-direction: column; gap: 6px; } .nav ul li:not(:last-child) { display: none; }
+}
+</style>
+</head>
+<body>
+<!-- tasteskill: hero centred · palette mint-pink-accounts · type outfit · radius soft · buttons only (no chat input) -->
+<div class="wrap">
+  <nav class="nav"><div class="mark"><i>S</i>Sangamesh</div>
+    <ul><li><a href="#">Projects</a></li><li><a href="#">Résumé</a></li><li><a class="cta" href="#">Email me</a></li></ul></nav>
+  <section class="hero" data-enter>
+    <div class="avatar"><img src="memoji.png" alt="Sangamesh's memoji"></div>
+    <span class="notice"><span class="dot"></span>Software engineer · open to full-time roles</span>
+    <h1>Hi, I'm Sangamesh.<br>I build <em>friendly&nbsp;web&nbsp;apps</em></h1>
+    <p class="lead">Pick a question and I'll show you: projects, stack, résumé or life outside code.</p>
+    <div class="tiles">
+      <div class="tile main"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div><div><b>Projects</b><span>What I've built</span></div></div>
+      <div class="tile"><div class="ic" style="background:#3296961a"><svg viewBox="0 0 24 24" fill="none" stroke="#329696" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg></div><div><b>Me</b><span>Who I am</span></div></div>
+      <div class="tile"><div class="ic" style="background:#2f6fd61a"><svg viewBox="0 0 24 24" fill="none" stroke="#2f6fd6" stroke-width="2"><path d="m12 2 10 5-10 5L2 7z"/><path d="m2 17 10 5 10-5M2 12l10 5 10-5"/></svg></div><div><b>Skills</b><span>My stack</span></div></div>
+      <div class="tile"><div class="ic" style="background:#B95F9D1a"><svg viewBox="0 0 24 24" fill="none" stroke="#B95F9D" stroke-width="2" stroke-linejoin="round"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg></div><div><b>Fun</b><span>Outside code</span></div></div>
+      <div class="tile"><div class="ic" style="background:#C194331a"><svg viewBox="0 0 24 24" fill="none" stroke="#C19433" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg></div><div><b>Contact</b><span>Let's talk</span></div></div>
+    </div>
+    <span class="more">or browse <u>all 12 questions</u> →</span>
+    <div class="facts"><span><b>12</b> shipped projects</span><span><b>3 yrs</b> React &amp; Next.js</span><span><b>Bengaluru</b> or remote</span></div>
+  </section>
+</div>
+</body>
+</html>
