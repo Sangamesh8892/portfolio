@@ -33,16 +33,19 @@ export default function DockSheet() {
     <Drawer.Root open={!!id} onOpenChange={(open) => !open && closeSheet()}>
       <Drawer.Portal>
         <Drawer.Overlay className="sheet-overlay" />
-        <Drawer.Content className="sheet glass" aria-describedby={undefined}>
-          <div className="sheet-handle" aria-hidden="true" />
-          <div className="sheet-bar">
-            <Drawer.Title className="sheet-title">{title}</Drawer.Title>
-            <button type="button" className="sheet-close" onClick={closeSheet} aria-label="Close">
-              <X size={18} />
-            </button>
-          </div>
-          <div className="sheet-body" data-lenis-prevent>
-            {id && (Special ? <Special /> : <AnswerPanel id={id} />)}
+        {/* vaul draws its own ::after on Drawer.Content, so the glass lives on an inner panel */}
+        <Drawer.Content className="sheet" aria-describedby={undefined}>
+          <div className="sheet-panel glass">
+            <div className="sheet-handle" aria-hidden="true" />
+            <div className="sheet-bar">
+              <Drawer.Title className="sheet-title">{title}</Drawer.Title>
+              <button type="button" className="sheet-close" onClick={closeSheet} aria-label="Close">
+                <X size={18} />
+              </button>
+            </div>
+            <div className="sheet-body" data-lenis-prevent>
+              {id && (Special ? <Special /> : <AnswerPanel id={id} />)}
+            </div>
           </div>
         </Drawer.Content>
       </Drawer.Portal>

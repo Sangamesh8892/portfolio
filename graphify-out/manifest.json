@@ -6,9 +6,9 @@
     "semantic_hash": ""
   },
   "components.json": {
-    "mtime": 1795203463.7464707,
-    "seen": 1795248271.0978231,
-    "ast_hash": "1b734c0fbd3d723aa6b34374ee3d7f2b",
+    "mtime": 1795269774.7748604,
+    "seen": 1795271590.8401759,
+    "ast_hash": "b33c12402145a3f9a5255b3da24fb68b",
     "semantic_hash": ""
   },
   "eslint.config.mjs": {
@@ -18,9 +18,9 @@
     "semantic_hash": ""
   },
   "package.json": {
-    "mtime": 1795203463.7464707,
-    "seen": 1795248271.097842,
-    "ast_hash": "9a019a425c2d6723a024ffb5e19d36c8",
+    "mtime": 1795269773.340663,
+    "seen": 1795271590.8402026,
+    "ast_hash": "40dc1fb5628a796b22af930d31b9fb53",
     "semantic_hash": ""
   },
   "postcss.config.mjs": {
@@ -84,9 +84,9 @@
     "semantic_hash": ""
   },
   "design/landing-mockups/glass/bg3d.js": {
-    "mtime": 1795248208.4330025,
-    "seen": 1795248271.0978277,
-    "ast_hash": "0d2069aa28302f8c5abe9f4e51ae3b1d",
+    "mtime": 1795259377.0871823,
+    "seen": 1795271590.84018,
+    "ast_hash": "a6e72d44810973f941b482e0ccd28980",
     "semantic_hash": ""
   },
   "design/landing-mockups/glass/fluid-cursor.js": {
@@ -120,21 +120,21 @@
     "semantic_hash": ""
   },
   "src/app/chat/page.jsx": {
-    "mtime": 1795203451.1812704,
-    "seen": 1795248271.0978477,
-    "ast_hash": "b7a80a60bc3b899c34cf31525df38e61",
+    "mtime": 1795260369.155614,
+    "seen": 1795271590.8402076,
+    "ast_hash": "c169f98dce780c17679ff05b89af0263",
     "semantic_hash": ""
   },
   "src/app/layout.jsx": {
-    "mtime": 1795203451.2137067,
-    "seen": 1795248271.0978496,
-    "ast_hash": "8a2082b82750e5073e7d97f66a40dd9e",
+    "mtime": 1795260321.598456,
+    "seen": 1795271590.84021,
+    "ast_hash": "54b00f3592bb07aec9a43a8ba7162b32",
     "semantic_hash": ""
   },
   "src/app/page.jsx": {
-    "mtime": 1795203451.2660768,
-    "seen": 1795248271.097852,
-    "ast_hash": "492f4ca8d2820f8cb2eec110bbc59120",
+    "mtime": 1795263181.7856698,
+    "seen": 1795271590.8402119,
+    "ast_hash": "d13fca434c8aa6ba5fd091d69727fdaa",
     "semantic_hash": ""
   },
   "src/components/FluidCursor.jsx": {
@@ -144,21 +144,15 @@
     "semantic_hash": ""
   },
   "src/components/InternshipCard.jsx": {
-    "mtime": 1795203451.4999444,
-    "seen": 1795248271.0978556,
-    "ast_hash": "a015dc427c68d7b505a6eaa615a797e4",
+    "mtime": 1795263042.6391535,
+    "seen": 1795271590.8402166,
+    "ast_hash": "d0889755c29c152cef2356b3844bcdd8",
     "semantic_hash": ""
   },
   "src/components/chat/HelperBoost.jsx": {
-    "mtime": 1795203451.407276,
-    "seen": 1795248271.097857,
-    "ast_hash": "1a0b96f5ca1a4715f0924bf95d1e2be4",
-    "semantic_hash": ""
-  },
-  "src/components/chat/chat-bottombar.jsx": {
-    "mtime": 1795203451.2981355,
-    "seen": 1795248271.097859,
-    "ast_hash": "d902300f1ec9c9649bc0e0c97d262b48",
+    "mtime": 1795260500.4247391,
+    "seen": 1795271590.8402188,
+    "ast_hash": "296b507278acc163b2690d1f5b651812",
     "semantic_hash": ""
   },
   "src/components/chat/chat-message-content.jsx": {
@@ -168,9 +162,9 @@
     "semantic_hash": ""
   },
   "src/components/chat/chat.jsx": {
-    "mtime": 1795203451.3731565,
-    "seen": 1795248271.097862,
-    "ast_hash": "0f0f49df6e93ad2bb9d9cedb8374effc",
+    "mtime": 1795260500.365738,
+    "seen": 1795271590.8402243,
+    "ast_hash": "a4d912daf3a3c78d6e44f3b39820487f",
     "semantic_hash": ""
   },
   "src/components/chat/simple-chat-view.jsx": {
@@ -186,9 +180,9 @@
     "semantic_hash": ""
   },
   "src/components/contact.jsx": {
-    "mtime": 1795203451.4644842,
-    "seen": 1795248271.097867,
-    "ast_hash": "9655dce7b174e6cc740ebb152b1a3929",
+    "mtime": 1795263043.3157785,
+    "seen": 1795271590.840232,
+    "ast_hash": "3c021ea06f5bf2f1f9596d62d48b5c1a",
     "semantic_hash": ""
   },
   "src/components/magicui/animated-shiny-text.jsx": {
@@ -234,9 +228,9 @@
     "semantic_hash": ""
   },
   "src/components/skills.jsx": {
-    "mtime": 1795203451.6791065,
-    "seen": 1795248271.0978796,
-    "ast_hash": "1eaa95e93024e0167860712b0dfd86f3",
+    "mtime": 1795249179.5834298,
+    "seen": 1795271590.8402734,
+    "ast_hash": "f710464719196d9e529f0b130450eb29",
     "semantic_hash": ""
   },
   "src/components/sport.jsx": {
@@ -372,15 +366,15 @@
     "semantic_hash": ""
   },
   "src/components/welcome-modal.jsx": {
-    "mtime": 1795203452.0739155,
-    "seen": 1795248271.0979168,
-    "ast_hash": "1c5dffe5df7cbdb4dd95d88f1290228c",
+    "mtime": 1795260405.0113766,
+    "seen": 1795271590.8403392,
+    "ast_hash": "a3c02f884da2ff23b5320cc17285839f",
     "semantic_hash": ""
   },
   "src/data/portfolio.js": {
-    "mtime": 1795203693.0104406,
-    "seen": 1795248271.0979185,
-    "ast_hash": "625044c2b729a37fc1f2f07769ee8eaf",
+    "mtime": 1795271211.442205,
+    "seen": 1795271590.8403413,
+    "ast_hash": "e9013348c04c4826a29a0061c14b0bf0",
     "semantic_hash": ""
   },
   "src/hooks/use-FluidCursor.jsx": {
@@ -414,27 +408,27 @@
     "semantic_hash": ""
   },
   "design/landing-mockups/b2-glass-1-silk.html": {
-    "mtime": 1795248244.3106036,
-    "seen": 1795248271.0979352,
-    "ast_hash": "e33be660107acc650fc5d7f2259add84",
+    "mtime": 1795249225.651074,
+    "seen": 1795271590.8403864,
+    "ast_hash": "1973db3a654cf73cfefbb59a96ff5fd6",
     "semantic_hash": ""
   },
   "design/landing-mockups/b2-glass-2-orbs.html": {
-    "mtime": 1795248268.2631068,
-    "seen": 1795248271.0979369,
-    "ast_hash": "5dca49d88d10842b9304936f66310822",
+    "mtime": 1795259377.656103,
+    "seen": 1795271590.8403904,
+    "ast_hash": "5bc8f9d9cf123098a1f83842820be7a6",
     "semantic_hash": ""
   },
   "design/landing-mockups/b2-glass-3-field.html": {
-    "mtime": 1795248268.282601,
-    "seen": 1795248271.0979388,
-    "ast_hash": "e9d6799a545f9b91849ddcc0973122b3",
+    "mtime": 1795249225.8401556,
+    "seen": 1795271590.840392,
+    "ast_hash": "97eafdd29fab9a9605e3050a39a7287c",
     "semantic_hash": ""
   },
   "design/website_Flow.md": {
-    "mtime": 1795247765.9641573,
-    "seen": 1795248271.0979404,
-    "ast_hash": "371a0f6636303b48b6ba575fe06e67e6",
+    "mtime": 1795269812.25957,
+    "seen": 1795271590.8403943,
+    "ast_hash": "c29f087a389d284dc242f32dfef2f16b",
     "semantic_hash": ""
   },
   "design/landing-mockups/b2-centred-buttons-1440.png": {
@@ -473,10 +467,352 @@
     "ast_hash": "3683b2591b2e9a507a8d46760ffb8b6c",
     "semantic_hash": ""
   },
+  ".mcp.json": {
+    "mtime": 1795269774.2072139,
+    "seen": 1795271590.8401682,
+    "ast_hash": "58c4553f3343186aad144d8d28c5fb4f",
+    "semantic_hash": ""
+  },
+  "src/components/dock/CertsCard.jsx": {
+    "mtime": 1795271342.570736,
+    "seen": 1795271590.8402343,
+    "ast_hash": "c82054a893d42cfc4dee539be5de5209",
+    "semantic_hash": ""
+  },
+  "src/components/dock/CopyEmailButton.jsx": {
+    "mtime": 1795263029.1043785,
+    "seen": 1795271590.8402364,
+    "ast_hash": "b96d72b0c0f6417c71be0f6e6d28a0eb",
+    "semantic_hash": ""
+  },
+  "src/components/dock/DockSheet.jsx": {
+    "mtime": 1795270837.7810833,
+    "seen": 1795271590.8402386,
+    "ast_hash": "58788a7fc2ae946aa417f5a5d53095be",
+    "semantic_hash": ""
+  },
+  "src/components/dock/GlassDock.jsx": {
+    "mtime": 1795267568.128445,
+    "seen": 1795271590.840241,
+    "ast_hash": "55891182038b2e92de5a512040142259",
+    "semantic_hash": ""
+  },
+  "src/components/dock/QuestionsPanel.jsx": {
+    "mtime": 1795263168.53702,
+    "seen": 1795271590.8402426,
+    "ast_hash": "bc2d17918ad487f99105624330b70b2e",
+    "semantic_hash": ""
+  },
+  "src/components/site/GlassRuntime.jsx": {
+    "mtime": 1795266357.6545694,
+    "seen": 1795271590.840261,
+    "ast_hash": "8e22fc94680db17c6485cf508c433104",
+    "semantic_hash": ""
+  },
+  "src/components/site/MercuryToggle.jsx": {
+    "mtime": 1795260249.4182558,
+    "seen": 1795271590.840263,
+    "ast_hash": "09bae1acb735fd6c7b071a85c2773891",
+    "semantic_hash": ""
+  },
+  "src/components/site/NeuralBackground.jsx": {
+    "mtime": 1795260219.9629369,
+    "seen": 1795271590.8402677,
+    "ast_hash": "0fb33a75166c15e9db58f62cec7229d3",
+    "semantic_hash": ""
+  },
+  "src/components/site/SiteNav.jsx": {
+    "mtime": 1795263181.5242393,
+    "seen": 1795271590.8402698,
+    "ast_hash": "35752bb485a02dec63a20235e5460861",
+    "semantic_hash": ""
+  },
+  "src/components/site/icons.js": {
+    "mtime": 1795267567.3887737,
+    "seen": 1795271590.8402717,
+    "ast_hash": "59921b37a5a0705204a91aa74bea2e48",
+    "semantic_hash": ""
+  },
+  "src/components/story/About.jsx": {
+    "mtime": 1795266452.324361,
+    "seen": 1795271590.8402777,
+    "ast_hash": "663754d71bf23f4a5a88fe31f9a3d75a",
+    "semantic_hash": ""
+  },
+  "src/components/story/Close.jsx": {
+    "mtime": 1795263142.975641,
+    "seen": 1795271590.8402796,
+    "ast_hash": "77b44781b95889a6bbb27fd14111d4c4",
+    "semantic_hash": ""
+  },
+  "src/components/story/Experience.jsx": {
+    "mtime": 1795266453.1252716,
+    "seen": 1795271590.840281,
+    "ast_hash": "79021105225ce6de27c70f6bff250a24",
+    "semantic_hash": ""
+  },
+  "src/components/story/Hero.jsx": {
+    "mtime": 1795267567.7693133,
+    "seen": 1795271590.840283,
+    "ast_hash": "3fe348d8c7c505bf2b92103bc78b9c55",
+    "semantic_hash": ""
+  },
+  "src/components/story/MvpPipeline.jsx": {
+    "mtime": 1795267107.801888,
+    "seen": 1795271590.8402843,
+    "ast_hash": "5ef09d7bdf952c0e13e6503a40cd4b3f",
+    "semantic_hash": ""
+  },
+  "src/components/story/SmoothScroll.jsx": {
+    "mtime": 1795267107.7710843,
+    "seen": 1795271590.8402863,
+    "ast_hash": "e65cef7b312f659c5920e7b600b7a70b",
+    "semantic_hash": ""
+  },
+  "src/components/ui/border-beam.jsx": {
+    "mtime": 1795270636.223109,
+    "seen": 1795271590.8402987,
+    "ast_hash": "db3a070893fcb036c46fb91d1a5f0875",
+    "semantic_hash": ""
+  },
+  "src/lib/copy-text.js": {
+    "mtime": 1795263013.263881,
+    "seen": 1795271590.8403473,
+    "ast_hash": "7ef3b70a1a8d0de53b6735ec332d90fb",
+    "semantic_hash": ""
+  },
+  "src/lib/core-poses.js": {
+    "mtime": 1795267136.3253617,
+    "seen": 1795271590.8403492,
+    "ast_hash": "3d83375f96b862f31c7d24660ded3579",
+    "semantic_hash": ""
+  },
+  "src/lib/credential.js": {
+    "mtime": 1795270667.170804,
+    "seen": 1795271590.8403509,
+    "ast_hash": "f13ce2d0ac79e9691d1715dd67bbdb47",
+    "semantic_hash": ""
+  },
+  "src/lib/glass-map.js": {
+    "mtime": 1795266321.8260033,
+    "seen": 1795271590.840353,
+    "ast_hash": "1aa14ea525dfb9eacb7e66567b0cd0bd",
+    "semantic_hash": ""
+  },
+  "src/lib/neural-scene.js": {
+    "mtime": 1795267094.40617,
+    "seen": 1795271590.840355,
+    "ast_hash": "2b549e0a6a3670fe54acf2f4966455aa",
+    "semantic_hash": ""
+  },
+  "src/lib/sheet-store.js": {
+    "mtime": 1795262801.9766333,
+    "seen": 1795271590.840359,
+    "ast_hash": "5eb8899a6986396f644f775709595392",
+    "semantic_hash": ""
+  },
+  "src/lib/story-store.js": {
+    "mtime": 1795266411.4606998,
+    "seen": 1795271590.8403609,
+    "ast_hash": "11a874531a7323570d6ec337695459e1",
+    "semantic_hash": ""
+  },
+  "src/lib/theme-palettes.js": {
+    "mtime": 1795266411.4581325,
+    "seen": 1795271590.8403628,
+    "ast_hash": "003463f3250c3c66794ee03798f5caf8",
+    "semantic_hash": ""
+  },
+  "tests/copy-text.test.mjs": {
+    "mtime": 1795262955.8705974,
+    "seen": 1795271590.8403668,
+    "ast_hash": "c4a2ad5a691206af13a8884ba763ec7a",
+    "semantic_hash": ""
+  },
+  "tests/core-poses.test.mjs": {
+    "mtime": 1795267033.1241555,
+    "seen": 1795271590.8403695,
+    "ast_hash": "84e4e2200120904ff00c3b958387ef2a",
+    "semantic_hash": ""
+  },
+  "tests/credential.test.mjs": {
+    "mtime": 1795271200.641134,
+    "seen": 1795271590.8403716,
+    "ast_hash": "db9b28ecaf49c9ebd0a164753bff943c",
+    "semantic_hash": ""
+  },
+  "tests/data.test.mjs": {
+    "mtime": 1795267528.382542,
+    "seen": 1795271590.8403735,
+    "ast_hash": "f1cc04afe69a4f965115984a4626a7af",
+    "semantic_hash": ""
+  },
+  "tests/glass-map.test.mjs": {
+    "mtime": 1795266300.084664,
+    "seen": 1795271590.8403752,
+    "ast_hash": "511452690255356ef57c7b2d9766bf5d",
+    "semantic_hash": ""
+  },
+  "tests/stores.test.mjs": {
+    "mtime": 1795262781.345116,
+    "seen": 1795271590.840377,
+    "ast_hash": "17a48026e9981f9393a89227b9f8eee8",
+    "semantic_hash": ""
+  },
+  "design/landing-mockups/b2-glass-2-orbs-v1.html": {
+    "mtime": 1795259020.4531896,
+    "seen": 1795271590.8403883,
+    "ast_hash": "e06cb4b09565968029a5b36176073b9d",
+    "semantic_hash": ""
+  },
+  "docs/superpowers/plans/2026-11-21-scroll-story.md": {
+    "mtime": 1795262682.4278786,
+    "seen": 1795271590.8403964,
+    "ast_hash": "64b53fe76963fa3dde28803db98e7276",
+    "semantic_hash": ""
+  },
+  "docs/superpowers/specs/2026-11-21-scroll-story-design.md": {
+    "mtime": 1795266580.8400836,
+    "seen": 1795271590.8403978,
+    "ast_hash": "9906205b5b9ee76cf47d054b559c31f7",
+    "semantic_hash": ""
+  },
+  "public/certificates/claude-architect-professional.pdf": {
+    "mtime": 1795271164.4325113,
+    "seen": 1795271590.8404,
+    "ast_hash": "ef375d5d8ad939f984534b320d64fed9",
+    "semantic_hash": ""
+  },
+  "public/certificates/claude-developer-foundations.pdf": {
+    "mtime": 1795271164.7576895,
+    "seen": 1795271590.8404014,
+    "ast_hash": "8adf8455c00f07797238614a36566759",
+    "semantic_hash": ""
+  },
+  "design/landing-mockups/shots/b2-glass-1-silk-1440.png": {
+    "mtime": 1795248306.3668897,
+    "seen": 1795271590.8404129,
+    "ast_hash": "f690f8b45835aec40af5462b85c0d540",
+    "semantic_hash": ""
+  },
+  "design/landing-mockups/shots/b2-glass-1-silk-390.png": {
+    "mtime": 1795248435.9482923,
+    "seen": 1795271590.8404148,
+    "ast_hash": "1455e8bb7ccca826cd0a54cfe630be6f",
+    "semantic_hash": ""
+  },
+  "design/landing-mockups/shots/b2-glass-2-orbs-1440.png": {
+    "mtime": 1795249230.485821,
+    "seen": 1795271590.8404164,
+    "ast_hash": "0ba99a1034e9d5fe254b744398ee2bd6",
+    "semantic_hash": ""
+  },
+  "design/landing-mockups/shots/b2-glass-2-orbs-390.png": {
+    "mtime": 1795248433.6956897,
+    "seen": 1795271590.8404183,
+    "ast_hash": "519d28f462b0577a4fd6008f1d561873",
+    "semantic_hash": ""
+  },
+  "design/landing-mockups/shots/b2-glass-2-orbs-dark-1440.png": {
+    "mtime": 1795259388.326195,
+    "seen": 1795271590.8404198,
+    "ast_hash": "df9039864239f7de23373d35cc1c8b3a",
+    "semantic_hash": ""
+  },
+  "design/landing-mockups/shots/b2-glass-2-orbs-dark-390.png": {
+    "mtime": 1795259413.4912179,
+    "seen": 1795271590.8404217,
+    "ast_hash": "5c67a62a8d284619ace5145e5fe092fa",
+    "semantic_hash": ""
+  },
+  "design/landing-mockups/shots/b2-glass-2-orbs-light-1440.png": {
+    "mtime": 1795259399.9752755,
+    "seen": 1795271590.8404233,
+    "ast_hash": "489fc92a2a98ef40a639eb9e26d884f9",
+    "semantic_hash": ""
+  },
+  "design/landing-mockups/shots/b2-glass-2-orbs-light-390.png": {
+    "mtime": 1795259410.9795215,
+    "seen": 1795271590.840425,
+    "ast_hash": "ad839c139c3b3564c69b13af40790377",
+    "semantic_hash": ""
+  },
+  "design/landing-mockups/shots/b2-glass-3-field-1440.png": {
+    "mtime": 1795249215.7989037,
+    "seen": 1795271590.8404267,
+    "ast_hash": "4ce52e76af36d3fc4fef31c377f3b704",
+    "semantic_hash": ""
+  },
+  "design/shots-app/chat-dark-1440.png": {
+    "mtime": 1795260574.2745197,
+    "seen": 1795271590.8404334,
+    "ast_hash": "503507a21e7278e27749098d77aad6d8",
+    "semantic_hash": ""
+  },
+  "design/shots-app/chat-light-projects-390.png": {
+    "mtime": 1795260610.5874906,
+    "seen": 1795271590.8404353,
+    "ast_hash": "18b2db47d396757056d75573451f2a40",
+    "semantic_hash": ""
+  },
+  "design/shots-app/home-dark-1440.png": {
+    "mtime": 1795260533.6465542,
+    "seen": 1795271590.840437,
+    "ast_hash": "244853b1155355e270d1f3c6c36c31e3",
+    "semantic_hash": ""
+  },
+  "design/shots-app/home-dark-390.png": {
+    "mtime": 1795260588.6092377,
+    "seen": 1795271590.8404388,
+    "ast_hash": "bc3b1e22055083c26a1774a62100d151",
+    "semantic_hash": ""
+  },
+  "design/shots-app/home-light-1440.png": {
+    "mtime": 1795260519.5271432,
+    "seen": 1795271590.8404405,
+    "ast_hash": "70724dffe9e3e9c1290cd3fe68bff44a",
+    "semantic_hash": ""
+  },
+  "design/shots-app/mercury-dark.png": {
+    "mtime": 1795260533.84043,
+    "seen": 1795271590.8404422,
+    "ast_hash": "eddad1ab41f7c0754f3124a866844d40",
+    "semantic_hash": ""
+  },
+  "design/shots-app/mercury-mid.png": {
+    "mtime": 1795260530.3581216,
+    "seen": 1795271590.8404438,
+    "ast_hash": "2923648aaf3d20a068c2941afcd833a8",
+    "semantic_hash": ""
+  },
+  "public/certificates/claude-architect-professional-thumb.jpg": {
+    "mtime": 1795271164.7530236,
+    "seen": 1795271590.840448,
+    "ast_hash": "db729e7f91f963d820107745ec845c8f",
+    "semantic_hash": ""
+  },
+  "public/certificates/claude-architect-professional.jpg": {
+    "mtime": 1795271164.6528826,
+    "seen": 1795271590.8404498,
+    "ast_hash": "d783af0c11495fbe5bea4d1432ad1868",
+    "semantic_hash": ""
+  },
+  "public/certificates/claude-developer-foundations-thumb.jpg": {
+    "mtime": 1795271165.0971098,
+    "seen": 1795271590.8404522,
+    "ast_hash": "a6c75b8c3a69dccb055fd8bec8756901",
+    "semantic_hash": ""
+  },
+  "public/certificates/claude-developer-foundations.jpg": {
+    "mtime": 1795271165.003039,
+    "seen": 1795271590.8404539,
+    "ast_hash": "c3772c4fdaf990402a6d9d5e075fc314",
+    "semantic_hash": ""
+  },
   "package-lock.json": {
-    "mtime": 1795201682.128242,
-    "seen": 1795248271.0979683,
-    "ast_hash": "23d2365cc39b57b517c430f4f7ac6221",
+    "mtime": 1795269773.5659442,
+    "seen": 1795271590.8404698,
+    "ast_hash": "172bd1e231fc9bddaa2592a1fc5e9ba6",
     "semantic_hash": ""
   },
   "pnpm-lock.yaml": {

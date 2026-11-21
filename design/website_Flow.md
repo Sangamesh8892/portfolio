@@ -48,6 +48,20 @@ Install only what's missing. **Read a skill's SKILL.md before installing it.** S
 ### 0.3 MCP
 
 - **Playwright MCP** must be connected (`mcp__playwright__*` tools). If missing: `claude mcp add playwright -- npx @playwright/mcp@latest`.
+- **shadcn MCP (free, no API key)** is the component source for shadcn/ui, React Bits and Magic UI, all in one server:
+  1. In the project: `npx shadcn@latest mcp init --client claude`. This writes `.mcp.json`.
+  2. On Windows, wrap the command: `"command": "cmd", "args": ["/c", "npx", "-y", "shadcn@latest", "mcp"]`.
+  3. If a stale `pnpm-lock.yaml` makes it try pnpm, run `npm i -D shadcn` yourself.
+  4. Add the registries to `components.json`:
+     ```json
+     "registries": {
+       "@react-bits": "https://reactbits.dev/r/{name}.json",
+       "@magicui": "https://magicui.design/r/{name}.json"
+     }
+     ```
+  5. React Bits names include the variant: `@react-bits/BlurText-JS-CSS` or `-JS-TW` (match the project's JS/TS and CSS/Tailwind).
+  6. Restart Claude Code and approve the project server once. Check it with `/mcp`.
+  - 21st.dev's MCP needs a paid key. Its components can still be installed free by URL: `npx shadcn add "https://21st.dev/r/<author>/<component>"`.
 
 ### 0.4 Libraries (install per project, only when the design calls for them)
 

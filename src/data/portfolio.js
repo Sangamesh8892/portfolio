@@ -55,10 +55,39 @@ export const hero = {
 };
 
 /* ── Certifications ─────────────────────────────────────────────────────── */
+// Dates are YYYY-MM-DD. verifyUrl opens the public Credly badge; null hides the verify button.
+// pdf / image / thumb live in /public/certificates (images rendered from page 1 of the PDF).
 export const certifications = [
-  { name: 'Claude Certified Architect – Professional', issuer: 'Anthropic' },
-  { name: 'Claude Certified Developer – Foundations', issuer: 'Anthropic' },
-  { name: 'AWS Certified Generative AI Developer – Professional', issuer: 'AWS' },
+  {
+    name: 'Claude Certified Architect – Professional',
+    issuer: 'Anthropic',
+    level: 'Professional',
+    issued: '2026-11-01',
+    expires: '2027-11-01',
+    verifyUrl: 'https://www.credly.com/badges/95d9aa76-255b-4a17-a29c-5a35a6ba1977',
+    pdf: '/certificates/claude-architect-professional.pdf',
+    image: '/certificates/claude-architect-professional.jpg',
+    thumb: '/certificates/claude-architect-professional-thumb.jpg',
+  },
+  {
+    name: 'Claude Certified Developer – Foundations',
+    issuer: 'Anthropic',
+    level: 'Foundations',
+    issued: '2026-09-12',
+    expires: '2027-09-12',
+    verifyUrl: 'https://www.credly.com/badges/a3cdd74c-50b7-4e2f-8fa7-ef2072be1873',
+    pdf: '/certificates/claude-developer-foundations.pdf',
+    image: '/certificates/claude-developer-foundations.jpg',
+    thumb: '/certificates/claude-developer-foundations-thumb.jpg',
+  },
+  {
+    name: 'AWS Certified Generative AI Developer – Professional',
+    issuer: 'AWS',
+    level: 'Professional',
+    issued: null, // TODO: issue date
+    expires: null, // TODO: expiry date
+    verifyUrl: null, // TODO: Credly link
+  },
 ];
 
 /* ── Scroll story: About ────────────────────────────────────────────────── */
