@@ -7,14 +7,14 @@ const useFluidCursor = () => {
 
   let config = {
     SIM_RESOLUTION: 128,
-    DYE_RESOLUTION: 1440,
+    DYE_RESOLUTION: 1024, // was 1440: the splash is soft, so this looks the same and costs less
     CAPTURE_RESOLUTION: 1512,
-    DENSITY_DISSIPATION: 0.5,
+    DENSITY_DISSIPATION: 0.75, // was 0.5: colour fades a little sooner
     VELOCITY_DISSIPATION: 3,
     PRESSURE: 0.1,
     PRESSURE_ITERATIONS: 20,
     CURL: 3,
-    SPLAT_RADIUS: 0.2,
+    SPLAT_RADIUS: 0.14, // was 0.2: smaller splash
     SPLAT_FORCE: 6000,
     SHADING: true,
     COLOR_UPDATE_SPEED: 10,
@@ -1252,9 +1252,10 @@ const useFluidCursor = () => {
 
   function generateColor() {
     let c = HSVtoRGB(Math.random(), 1.0, 1.0);
-    c.r *= 0.15;
-    c.g *= 0.15;
-    c.b *= 0.15;
+    // colour strength, was 0.15: softer splash
+    c.r *= 0.11;
+    c.g *= 0.11;
+    c.b *= 0.11;
     return c;
   }
 
