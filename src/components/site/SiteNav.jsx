@@ -7,7 +7,7 @@ import { openSheet } from '@/lib/sheet-store';
 
 const LINKS = [
   ['about', 'About'],
-  ['work', 'Work'],
+  ['agents', 'Agents'],
   ['experience', 'Experience'],
 ];
 

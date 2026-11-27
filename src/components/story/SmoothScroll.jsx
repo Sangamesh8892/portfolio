@@ -19,15 +19,20 @@ export function scrollToId(id) {
   else el.scrollIntoView({ behavior: 'auto', block: 'start' });
 }
 
+/** Smooth-scroll to an absolute page offset (used to jump inside pinned sections). */
+export function scrollToY(y) {
+  if (lenis) lenis.scrollTo(y, { duration: 1.2 });
+  else window.scrollTo({ top: y, behavior: 'auto' });
+}
+
 /**
  * Lenis smooth scroll wired to GSAP ScrollTrigger, plus story tracking:
  * every [data-story] section writes { section, progress } while it is in view.
- * The 'work' section's progress is written by its own pinned timeline.
  */
 export default function SmoothScroll({ children }) {
   useEffect(() => {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    setStory({ section: 'hero', progress: 0, agent: true });
+    setStory({ section: 'hero', progress: 0 });
     let idle = 0;
     const onScroll = () => {
       if (!getStory().scrolling) setStory({ scrolling: true });
@@ -54,13 +59,10 @@ export default function SmoothScroll({ children }) {
         start: 'top center',
         end: 'bottom center',
         onToggle: (self) => {
-          if (!self.isActive) return;
-          // entering the MVP: start at its first station (from above) or its last (from below)
-          if (section === 'work') setStory({ section, progress: self.direction < 0 ? 1 : 0 });
-          else setStory({ section });
+          if (self.isActive) setStory({ section });
         },
         onUpdate: (self) => {
-          if (self.isActive && section !== 'work') setStory({ section, progress: self.progress });
+          if (self.isActive) setStory({ section, progress: self.progress });
         },
       });
     });
@@ -85,7 +87,6 @@ export default function SmoothScroll({ children }) {
       if (tick) gsap.ticker.remove(tick);
       lenis?.destroy();
       lenis = null;
-      setStory({ agent: false, track: null });
     };
   }, []);
 

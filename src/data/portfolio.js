@@ -15,16 +15,17 @@ const PLACEHOLDER = '/placeholder.svg';
 
 /* ── Site & SEO ─────────────────────────────────────────────────────────── */
 export const site = {
-  title: 'Sangamesh — GenAI Engineer',
+  title: 'Sangamesh — GenAI Developer & Architect',
   description:
-    'GenAI engineer building agents that automate the SAP SDLC: FSD to TSD, quick edits, retrieval tuned for SAP.',
+    'GenAI developer and architect designing multi-agent systems, agentic RAG and human-in-the-loop workflows for enterprise delivery.',
   url: 'https://example.com', // TODO: your domain
   keywords: [
-    'GenAI Engineer',
+    'GenAI Developer',
+    'GenAI Architect',
     'AI Agents',
-    'SAP',
-    'SAP AI Core',
-    'RAG',
+    'Multi-agent systems',
+    'Agentic RAG',
+    'LangGraph',
     'Claude',
     'Portfolio',
   ],
@@ -34,17 +35,17 @@ export const site = {
 /* ── Landing hero ───────────────────────────────────────────────────────── */
 export const hero = {
   greeting: "Hey, I'm Sangamesh 👋",
-  headline: 'GenAI Engineer',
+  headline: 'GenAI Developer & Architect',
   /** Landing hero (B2 centred) */
-  notice: 'GenAI engineer · AI agents for SAP',
+  notice: 'GenAI developer & architect',
   titleLine: "Hi, I'm Sangamesh.",
   titleLead: 'I build',
-  titleEmphasis: 'AI agents for SAP',
-  lead: 'Functional spec in, technical spec out, grounded in client standards and live SAP ADT context.',
+  titleEmphasis: 'AI agents that do real work',
+  lead: 'Multi-agent systems grounded in enterprise context, with a human in the loop where quality matters.',
   facts: [
-    { strong: '80–90%', text: 'accurate TSD drafts' },
+    { strong: '80–90%', text: 'accurate first drafts' },
     { strong: '3', text: 'AI certifications' },
-    { strong: 'SAP AI Core', text: '· Azure · GCP' },
+    { strong: 'Multi-cloud', text: '· Azure · GCP · AWS' },
   ],
   /** Giant faded word at the bottom of the landing page. */
   watermark: 'Sangamesh',
@@ -92,7 +93,7 @@ export const certifications = [
 
 /* ── Scroll story: About ────────────────────────────────────────────────── */
 export const about = {
-  lead: 'I design multi-agent systems that take the slow, manual work out of SAP delivery.',
+  lead: 'I design multi-agent systems that take the slow, manual work out of enterprise delivery.',
   body: [
     'I build with LangGraph and LangChain, ground every agent in real enterprise context with agentic RAG, and keep a human in the loop where quality matters.',
     'Before agents, I did applied ML: I took a desktop-grade PyTorch model and made it run fully offline on a phone.',
@@ -105,26 +106,70 @@ export const about = {
   ],
 };
 
-/* ── Scroll story: the MVP ──────────────────────────────────────────────── */
-export const mvp = {
-  name: 'HITL SAP Automation Platform',
-  intro:
-    'A chain of agents that carries an SAP change from a user story to tested code. After every agent, a person checks the work before the next one starts.',
-  stations: [
-    { id: 'story', label: 'User story', agent: 'Intake', does: 'The requirement, as the business wrote it.' },
-    { id: 'fsd', label: 'Functional spec', agent: 'FSD agent', does: 'Turns the story into a functional design.' },
-    { id: 'tsd', label: 'Technical spec', agent: 'TSD agent', does: 'Writes the technical design in the client’s own standards.' },
-    { id: 'abap', label: 'ABAP code', agent: 'Code agent', does: 'Generates ABAP that follows the naming and coding rules.' },
-    { id: 'tests', label: 'Test cases', agent: 'Test agent', does: 'Produces the test cases for the change.' },
-  ],
-  groups: [
-    { title: 'Grounding', items: ['Consultant knowledge base', 'Client naming + coding standards', 'Live SAP ADT context'] },
-    { title: 'Retrieval', items: ['FAISS + Pinecone', 'BM25 + semantic search', 'Chunk reranking'] },
-    { title: 'Infra', items: ['Azure Blob Storage', 'Redis Cache', 'Outputs held for human review'] },
-    { title: 'Models', items: ['SAP AI Core', 'Azure', 'Google Cloud'] },
-  ],
-  outcome: ['80–90% accurate TSD drafts', 'Quick edits applied in place', 'Human checkpoint after every agent'],
-};
+/* ── Scroll story: agents I've built ────────────────────────────────────────
+ * One pinned chapter per agent, in this order. Add an object to add a chapter.
+ *
+ *   name     agent name (the chapter title and its tab)
+ *   status   e.g. 'In production', 'Pilot', 'In progress'; live: true adds the green dot
+ *   lede     what it does. **word** renders bold
+ *   client   who it was for (a description is fine while names can't be shown)
+ *   domain   area, e.g. 'SAP FI'
+ *   result   { big: headline number, text: what the number means }
+ *   stack    tech used
+ *   demo     the live demo on the right:
+ *            'tsd' | 'edit' | 'route' | 'retrieval' | 'generic'
+ *            'generic' builds an input → output demo from
+ *            input: { label, text } and output: { label, lines: [...] }
+ *
+ * Anything written as [like this] shows as a dashed placeholder on the site.
+ */
+export const agents = [
+  {
+    id: 'fsd-tsd',
+    name: 'FSD → TSD Agent',
+    status: 'In production',
+    live: true,
+    lede: 'Give it a **functional spec** and it writes the **technical spec**, grounded in the consultant knowledge base, the client’s naming and coding standards, and live context from SAP ADT.',
+    client: '[Client name]', // TODO
+    domain: 'SAP delivery · [module]', // TODO
+    result: { big: '80–90%', text: 'accurate first drafts' },
+    stack: ['SAP ADT', 'SAP AI Core', 'Hybrid RAG', 'LLM agents'],
+    demo: 'tsd',
+  },
+  {
+    id: 'quick-edits',
+    name: 'Quick Edits',
+    status: '[Status]', // TODO
+    lede: 'Ask for a change in plain words and it lands **in place** in seconds: targeted edits to a generated document, without regenerating the whole thing.',
+    client: '[Client name]', // TODO
+    domain: 'SAP delivery · documents',
+    result: { big: '[x]', text: '[result, e.g. time saved per edit]' }, // TODO
+    stack: ['LLM agents', 'Token optimisation'],
+    demo: 'edit',
+  },
+  {
+    id: 'model-layer',
+    name: 'Multi-cloud Model Layer',
+    status: '[Status]', // TODO
+    lede: 'One way for agents to call models hosted on **SAP AI Core, Azure and Google Cloud**, including SAP AI Core authentication, so each task gets the right model.',
+    client: '[Client name]', // TODO
+    domain: 'Platform',
+    result: { big: '3', text: 'model platforms behind one interface' },
+    stack: ['SAP AI Core', 'Azure', 'GCP'],
+    demo: 'route',
+  },
+  {
+    id: 'retrieval',
+    name: 'Retrieval Tuned for SAP',
+    status: '[Status]', // TODO
+    lede: 'Chunking built around **how SAP specs are written**, hybrid BM25 + semantic retrieval with reranking, and token budgets that keep context tight and costs down.',
+    client: '[Client name]', // TODO
+    domain: 'RAG · SAP documents',
+    result: { big: '[x]', text: '[result, e.g. retrieval accuracy]' }, // TODO
+    stack: ['BM25', 'Embeddings', 'Reranking', 'Chunking'],
+    demo: 'retrieval',
+  },
+];
 
 /* ── Scroll story: experience ───────────────────────────────────────────── */
 export const experience = [
@@ -159,12 +204,12 @@ export const education = {
 /* ── About card ─────────────────────────────────────────────────────────── */
 export const profile = {
   name: 'Sangamesh',
-  subtitle: 'GenAI Engineer · SAP SDLC automation',
+  subtitle: 'GenAI Developer & Architect',
   location: 'Bengaluru, India',
   description:
-    "Hey 👋\nI'm Sangamesh. I build AI agents that take the slow, manual parts out of SAP delivery. Give my TSD agent a functional spec and it writes the technical spec, grounded in the consultant's knowledge base, the client's naming and coding standards, and live context from SAP ADT.",
+    "Hey 👋\nI'm Sangamesh, a GenAI developer and architect. I design multi-agent systems that take the slow, manual parts out of enterprise work, grounded in real context with agentic RAG and checked by a human where it matters. My latest platform turns a user story into specs, code and tests.",
   photo: PLACEHOLDER, // TODO
-  tags: ['AI agents', 'SAP', 'RAG', 'Claude certified', 'AWS GenAI certified'],
+  tags: ['AI agents', 'Multi-agent systems', 'RAG', 'Claude certified', 'AWS GenAI certified'],
 };
 
 /* ── Skills card ────────────────────────────────────────────────────────── */
@@ -264,7 +309,7 @@ export const projects = [
 /* ── Resume card ────────────────────────────────────────────────────────── */
 export const resume = {
   title: "Sangamesh's Resume",
-  description: 'GenAI Engineer • AI agents for SAP',
+  description: 'GenAI Developer & Architect',
   fileType: 'PDF',
   lastUpdated: 'Month 2026', // TODO
   fileSize: '0.5 MB', // TODO
@@ -301,11 +346,11 @@ export const availability = {
   duration: 'Full-time', // TODO
   location: 'Remote or City', // TODO
   stack: [
-    'AI agents, RAG, Claude',
-    'SAP AI Core, SAP ADT, Azure, GCP, AWS',
+    'AI agents, multi-agent systems, RAG, Claude',
+    'Azure, GCP, AWS, SAP AI Core',
   ],
   whatIBring:
-    'Agents that ship into real SAP delivery: grounded in client standards, measured on accuracy, and cheap to run.', // TODO: check wording
+    'Agents that ship into real enterprise delivery: grounded in client standards, measured on accuracy, and cheap to run.', // TODO: check wording
   goal: 'One line on the kind of team or role you want next.', // TODO
 };
 
@@ -327,14 +372,14 @@ export const answers = [
     card: 'about',
     keywords: ['who', 'about', 'yourself', 'you are', 'introduce', 'background', 'passion'],
     reply:
-      "That's me! I'm a GenAI engineer. I build agents that automate the SAP SDLC, like turning a functional spec into a technical spec. Want to see the agents, my stack, or my certifications?",
+      "That's me! I'm a GenAI developer and architect. I design multi-agent systems that automate real enterprise work, like turning a functional spec into a technical spec. Want to see the agents, my stack, or my certifications?",
   },
   {
     id: 'projects',
     card: 'projects',
     keywords: ['project', 'work', 'built', 'build', 'portfolio', 'proud', 'working on', 'agent'],
     reply:
-      'These are the agents and systems I build for SAP delivery. Tap a card for details, or ask **how the TSD agent works**.',
+      'These are the agents and systems I have built. Tap a card for details, or ask **how the TSD agent works**.',
   },
   {
     id: 'tsd-agent',
