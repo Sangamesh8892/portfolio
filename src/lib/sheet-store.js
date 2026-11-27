@@ -1,6 +1,6 @@
 import { useSyncExternalStore } from 'react';
 
-/** Which glass sheet is open: a dock id ('stack' | 'certs' | 'contact' | 'resume' | 'questions') or null. */
+/** Which glass sheet is open: a dock id ('stack' | 'certs' | 'contact' | 'resume' | 'questions'), 'agent:<id>', or null. */
 let sheet = null;
 const listeners = new Set();
 

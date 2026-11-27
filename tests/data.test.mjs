@@ -8,23 +8,31 @@ import {
   dock,
   education,
   experience,
+  featuredAgents,
 } from '../src/data/portfolio.js';
 import { hasPlaceholder, richParts } from '../src/lib/rich-text.js';
 
-const DEMOS = ['tsd', 'edit', 'route', 'retrieval', 'generic'];
+const DEMOS = ['tsd', 'codegen', 'remediate', 'generic'];
 
-test('every agent has the fields its chapter renders', () => {
+test('every agent has the fields its card, chapter and sheet render', () => {
   assert.ok(agents.length > 0);
   for (const a of agents) {
-    for (const key of ['id', 'name', 'status', 'lede', 'client', 'domain']) {
+    for (const key of ['id', 'name', 'status', 'oneLiner', 'lede', 'problem', 'human', 'client', 'domain']) {
       assert.equal(typeof a[key], 'string', `${a.id ?? a.name}: ${key}`);
       assert.ok(a[key].length > 0, `${a.id}: empty ${key}`);
     }
-    assert.equal(typeof a.result?.big, 'string', `${a.id}: result.big`);
-    assert.equal(typeof a.result?.text, 'string', `${a.id}: result.text`);
-    assert.ok(Array.isArray(a.stack) && a.stack.length > 0, `${a.id}: stack`);
-    assert.ok(DEMOS.includes(a.demo), `${a.id}: unknown demo "${a.demo}"`);
+    assert.equal(typeof a.io?.in, 'string', `${a.id}: io.in`);
+    assert.equal(typeof a.io?.out, 'string', `${a.id}: io.out`);
+    assert.ok(a.results.length > 0, `${a.id}: results`);
+    for (const r of a.results) assert.ok(typeof r.big === 'string' && typeof r.text === 'string', `${a.id}: result shape`);
+    for (const key of ['howItWorks', 'features', 'deployedOn', 'stack']) assert.ok(Array.isArray(a[key]), `${a.id}: ${key}`);
+    assert.ok(a.stack.length > 0, `${a.id}: stack`);
   }
+});
+
+test('featured agents each have a known demo', () => {
+  assert.ok(featuredAgents.length > 0 && featuredAgents.length <= 4);
+  for (const a of featuredAgents) assert.ok(DEMOS.includes(a.demo), `${a.id}: unknown demo "${a.demo}"`);
 });
 
 test('agent ids are unique', () => {
@@ -32,10 +40,11 @@ test('agent ids are unique', () => {
   assert.equal(new Set(ids).size, ids.length);
 });
 
-test('the FSD → TSD agent keeps its real 80–90% result', () => {
-  const tsd = agents.find((a) => a.id === 'fsd-tsd');
-  assert.equal(tsd.result.big, '80–90%');
-  assert.equal(hasPlaceholder(tsd.result.big), false);
+test('the Technical Spec agent keeps its real numbers', () => {
+  const tsd = agents.find((a) => a.id === 'technical-spec');
+  assert.ok(tsd.featured);
+  assert.deepEqual(tsd.results.map((r) => r.big), ['5 min', '80–90%', '3–4 h']);
+  assert.equal(hasPlaceholder(tsd.lede), false);
 });
 
 test('richParts splits bold and placeholders', () => {

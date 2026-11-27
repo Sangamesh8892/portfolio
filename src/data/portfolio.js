@@ -106,70 +106,153 @@ export const about = {
   ],
 };
 
-/* ── Scroll story: agents I've built ────────────────────────────────────────
- * One pinned chapter per agent, in this order. Add an object to add a chapter.
+/* ── Agents I've built ──────────────────────────────────────────────────────
+ * Every agent shows in the "All agents" grid (tap a card for its full sheet).
+ * Agents with featured: true also get a pinned chapter with a live demo, in
+ * the order listed here. Add an object to add an agent.
  *
- *   name     agent name (the chapter title and its tab)
- *   status   e.g. 'In production', 'Pilot', 'In progress'; live: true adds the green dot
- *   lede     what it does. **word** renders bold
- *   client   who it was for (a description is fine while names can't be shown)
- *   domain   area, e.g. 'SAP FI'
- *   result   { big: headline number, text: what the number means }
- *   stack    tech used
- *   demo     the live demo on the right:
- *            'tsd' | 'edit' | 'route' | 'retrieval' | 'generic'
- *            'generic' builds an input → output demo from
- *            input: { label, text } and output: { label, lines: [...] }
+ *   id, name       name is the card / chapter title
+ *   featured       true: pinned chapter with demo (keep this to ~3)
+ *   status, live   e.g. 'In production'; live: true adds the green dot
+ *   oneLiner       one sentence for the grid card
+ *   lede           what it does, for the chapter and sheet. **word** renders bold
+ *   io             { in, out }: what goes in, what comes out
+ *   problem        what was slow or manual before
+ *   human          what the person still does after the agent
+ *   howItWorks     high-level steps (keep it NDA-safe)
+ *   features       e.g. Quick Edits
+ *   deployedOn     e.g. ['SAP AI Core'] or ['Azure']
+ *   client, domain who it was for (a description is fine under NDA)
+ *   results        [{ big, text }]: the first one leads everywhere
+ *   stack          tech used
+ *   demo           featured only: 'tsd' | 'codegen' | 'remediate' | 'generic'
+ *                  ('generic' builds input → output from input/output fields)
  *
  * Anything written as [like this] shows as a dashed placeholder on the site.
  */
 export const agents = [
   {
-    id: 'fsd-tsd',
-    name: 'FSD → TSD Agent',
-    status: 'In production',
+    id: 'user-story',
+    name: 'User Story Agent',
+    status: '[Status]', // TODO
+    oneLiner: '[What it does in one sentence]', // TODO
+    lede: '[What it does]', // TODO
+    io: { in: '[Input]', out: 'User story' }, // TODO
+    problem: '[What was manual before]', // TODO
+    human: '[What the person still does]', // TODO
+    howItWorks: ['[Step]'], // TODO
+    features: [],
+    deployedOn: ['[Platform]'], // TODO
+    client: '[Client]', // TODO
+    domain: 'SAP delivery',
+    results: [{ big: '[x]', text: '[result]' }], // TODO
+    stack: ['[Stack]'], // TODO
+  },
+  {
+    id: 'functional-spec',
+    name: 'Functional Spec Agent',
+    status: '[Status]', // TODO
+    oneLiner: '[What it does in one sentence]', // TODO
+    lede: '[What it does]', // TODO
+    io: { in: '[Input]', out: 'Functional spec (FSD)' }, // TODO
+    problem: '[What was manual before]', // TODO
+    human: '[What the person still does]', // TODO
+    howItWorks: ['[Step]'], // TODO
+    features: [],
+    deployedOn: ['[Platform]'], // TODO
+    client: '[Client]', // TODO
+    domain: 'SAP delivery',
+    results: [{ big: '[x]', text: '[result]' }], // TODO
+    stack: ['[Stack]'], // TODO
+  },
+  {
+    id: 'technical-spec',
+    name: 'Technical Spec Agent',
+    featured: true,
+    status: 'In production · 2 clients',
     live: true,
-    lede: 'Give it a **functional spec** and it writes the **technical spec**, grounded in the consultant knowledge base, the client’s naming and coding standards, and live context from SAP ADT.',
-    client: '[Client name]', // TODO
-    domain: 'SAP delivery · [module]', // TODO
-    result: { big: '80–90%', text: 'accurate first drafts' },
-    stack: ['SAP ADT', 'SAP AI Core', 'Hybrid RAG', 'LLM agents'],
+    oneLiner: 'Turns a functional spec into a technical spec in about 5 minutes, 80–90% ready to use.',
+    lede: 'Reads a **functional spec** and writes the **technical spec** the way an SAP technical consultant would, making the design decisions along the way, grounded in the client’s own knowledge and live system.',
+    io: { in: 'Functional spec (FSD)', out: 'Technical spec (TSD, .docx)' },
+    problem: 'A technical spec took 10–15 hours of reading, cross-checking and going back and forth by hand.',
+    human: 'A technical consultant reviews the draft, adds the business decisions and finishes it in 3–4 hours, then the team moves straight on to building.',
+    howItWorks: [
+      'Retrieval tuned per client over a confidential knowledge base (HANA vector store)',
+      'Live SAP system context through the ADT API',
+      'An agent graph that drafts each section and makes consultant-style design decisions',
+      'Quick edits: prompt a change and it lands in place, inside the app',
+      'Exports a ready-to-share .docx',
+    ],
+    features: ['Quick edits in the app', 'Per-client retrieval', '.docx export'],
+    deployedOn: ['SAP BTP'], // TODO: confirm (HANA Cloud + BTP cockpit)
+    client: 'Under NDA · live with 2 clients, a 3rd being onboarded',
+    domain: 'SAP delivery',
+    results: [
+      { big: '5 min', text: 'instead of 10–15 hours by hand' },
+      { big: '80–90%', text: 'ready on the first draft' },
+      { big: '3–4 h', text: 'to review and finish, then straight to build' },
+    ],
+    stack: ['LangGraph', 'LangChain', 'SAP HANA Cloud', 'HANA Vector DB', 'SAP ADT API', 'SAP BTP', 'Azure Blob Storage', 'Python', 'React', 'Node.js'],
     demo: 'tsd',
   },
   {
-    id: 'quick-edits',
-    name: 'Quick Edits',
+    id: 'code-generation',
+    name: 'Code Generation Agent',
+    featured: true,
     status: '[Status]', // TODO
-    lede: 'Ask for a change in plain words and it lands **in place** in seconds: targeted edits to a generated document, without regenerating the whole thing.',
-    client: '[Client name]', // TODO
-    domain: 'SAP delivery · documents',
-    result: { big: '[x]', text: '[result, e.g. time saved per edit]' }, // TODO
-    stack: ['LLM agents', 'Token optimisation'],
-    demo: 'edit',
+    oneLiner: '[What it does in one sentence]', // TODO
+    lede: 'Takes a **technical spec** and writes the **ABAP**, following the client’s naming and coding standards. [Add details]', // TODO
+    io: { in: 'Technical spec (TSD)', out: 'ABAP code' },
+    problem: '[What was manual before]', // TODO
+    human: '[What the person still does]', // TODO
+    howItWorks: ['[Step]'], // TODO
+    features: [],
+    deployedOn: ['[Platform]'], // TODO
+    client: '[Client]', // TODO
+    domain: 'SAP delivery',
+    results: [{ big: '[x]', text: '[result]' }], // TODO
+    stack: ['[Stack]'], // TODO
+    demo: 'codegen',
   },
   {
-    id: 'model-layer',
-    name: 'Multi-cloud Model Layer',
+    id: 'code-remediation',
+    name: 'Code Remediation Agent',
+    featured: true,
     status: '[Status]', // TODO
-    lede: 'One way for agents to call models hosted on **SAP AI Core, Azure and Google Cloud**, including SAP AI Core authentication, so each task gets the right model.',
-    client: '[Client name]', // TODO
-    domain: 'Platform',
-    result: { big: '3', text: 'model platforms behind one interface' },
-    stack: ['SAP AI Core', 'Azure', 'GCP'],
-    demo: 'route',
+    oneLiner: '[What it does in one sentence]', // TODO
+    lede: 'Finds the problems in existing **ABAP** and fixes them. [Add details]', // TODO
+    io: { in: 'Existing ABAP code', out: 'Fixed, re-checked code' }, // TODO: confirm
+    problem: '[What was manual before]', // TODO
+    human: '[What the person still does]', // TODO
+    howItWorks: ['[Step]'], // TODO
+    features: [],
+    deployedOn: ['[Platform]'], // TODO
+    client: '[Client]', // TODO
+    domain: 'SAP delivery',
+    results: [{ big: '[x]', text: '[result]' }], // TODO
+    stack: ['[Stack]'], // TODO
+    demo: 'remediate',
   },
   {
-    id: 'retrieval',
-    name: 'Retrieval Tuned for SAP',
+    id: 'integration-spec',
+    name: 'Technical Spec for Integration Agent',
     status: '[Status]', // TODO
-    lede: 'Chunking built around **how SAP specs are written**, hybrid BM25 + semantic retrieval with reranking, and token budgets that keep context tight and costs down.',
-    client: '[Client name]', // TODO
-    domain: 'RAG · SAP documents',
-    result: { big: '[x]', text: '[result, e.g. retrieval accuracy]' }, // TODO
-    stack: ['BM25', 'Embeddings', 'Reranking', 'Chunking'],
-    demo: 'retrieval',
+    oneLiner: '[What it does in one sentence]', // TODO
+    lede: '[What it does]', // TODO
+    io: { in: '[Input]', out: 'Integration technical spec' }, // TODO
+    problem: '[What was manual before]', // TODO
+    human: '[What the person still does]', // TODO
+    howItWorks: ['[Step]'], // TODO
+    features: [],
+    deployedOn: ['[Platform]'], // TODO
+    client: '[Client]', // TODO
+    domain: 'SAP integration',
+    results: [{ big: '[x]', text: '[result]' }], // TODO
+    stack: ['[Stack]'], // TODO
   },
 ];
+
+export const featuredAgents = agents.filter((a) => a.featured);
 
 /* ── Scroll story: experience ───────────────────────────────────────────── */
 export const experience = [

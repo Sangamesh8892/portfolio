@@ -5,6 +5,7 @@ import GlassDock from '@/components/dock/GlassDock';
 import SiteNav from '@/components/site/SiteNav';
 import About from '@/components/story/About';
 import AgentChapters from '@/components/story/AgentChapters';
+import AgentGrid from '@/components/story/AgentGrid';
 import Close from '@/components/story/Close';
 import Experience from '@/components/story/Experience';
 import Hero from '@/components/story/Hero';
@@ -21,6 +22,7 @@ export default function Home() {
         <Hero />
         <About />
         <AgentChapters />
+        <AgentGrid />
         <Experience />
         <Close />
       </div>

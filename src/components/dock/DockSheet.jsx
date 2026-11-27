@@ -4,7 +4,8 @@ import { X } from 'lucide-react';
 import { Drawer } from 'vaul';
 import { SimplifiedChatView } from '@/components/chat/simple-chat-view';
 import Resume from '@/components/resume';
-import { dock } from '@/data/portfolio';
+import AgentDetail from '@/components/story/AgentDetail';
+import { agents, dock } from '@/data/portfolio';
 import { getAnswerById } from '@/lib/scripted-chat';
 import { useSheet } from '@/lib/sheet-store';
 import CertsCard from './CertsCard';
@@ -26,8 +27,12 @@ const TITLES = { resume: 'Résumé', questions: 'All questions' };
 /** One glass sheet over the story, driven by the sheet store (tiles, dock, nav, close). */
 export default function DockSheet() {
   const [id, , closeSheet] = useSheet();
-  const title = TITLES[id] ?? dock.find((d) => d.id === id)?.label ?? '';
-  const Special = id ? SPECIAL[id] : null;
+  // 'agent:<id>' opens that agent's full details
+  const agentId = id?.startsWith('agent:') ? id.slice(6) : null;
+  const title = agentId
+    ? agents.find((a) => a.id === agentId)?.name ?? ''
+    : TITLES[id] ?? dock.find((d) => d.id === id)?.label ?? '';
+  const Special = agentId ? () => <AgentDetail id={agentId} /> : id ? SPECIAL[id] : null;
 
   return (
     <Drawer.Root open={!!id} onOpenChange={(open) => !open && closeSheet()}>
