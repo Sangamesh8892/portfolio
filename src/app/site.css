@@ -6,7 +6,7 @@
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --bg: #f4f6fa;
   --ink: #0a0d14;
-  --ink-soft: #545c6e;
+  --ink-soft: #434a5a;
   --surface: rgb(255 255 255 / 0.6);
   --brand: #d4ff24;
   --brand-ink: #05070c;
@@ -67,7 +67,16 @@ html, body { background: var(--bg); color: var(--ink); }
 .color-field .cf-2 { width: 46vmax; height: 46vmax; left: -10vmax; bottom: -18vmax; background: radial-gradient(closest-side, var(--cf-lime), transparent); animation: cf-drift-2 30s ease-in-out infinite alternate; }
 .color-field .cf-3 { width: 34vmax; height: 34vmax; left: 34%; top: 30%; background: radial-gradient(closest-side, var(--cf-cyan), transparent); animation: cf-drift-3 22s ease-in-out infinite alternate; }
 .color-field .cf-4 { width: 22vmax; height: 22vmax; right: 18%; bottom: -4vmax; background: radial-gradient(closest-side, var(--cf-lime-2), transparent); animation: cf-drift-1 34s ease-in-out infinite alternate-reverse; }
-:root { --cf-blue: rgb(58 120 255 / 0.36); --cf-lime: rgb(212 255 36 / 0.55); --cf-cyan: rgb(56 189 248 / 0.28); --cf-lime-2: rgb(212 255 36 / 0.42); }
+:root { --cf-blue: rgb(58 120 255 / 0.26); --cf-lime: rgb(212 255 36 / 0.38); --cf-cyan: rgb(56 189 248 / 0.2); --cf-lime-2: rgb(212 255 36 / 0.3); }
+
+/* ── legibility over the colour splash ─────────────────────────────────────
+   The FluidCursor stays exactly as it is; text that sits straight on the
+   background gets a soft halo in the page colour so letters keep their edge
+   when a splash passes behind them. Glass panels and solid buttons opt out. */
+:root { --halo: 0 0 1px rgb(244 246 250 / 0.9), 0 0 10px rgb(244 246 250 / 0.95), 0 0 22px rgb(244 246 250 / 0.7); }
+.dark { --halo: 0 0 1px rgb(3 4 7 / 0.9), 0 0 10px rgb(3 4 7 / 0.9), 0 0 22px rgb(3 4 7 / 0.65); }
+.hero, .story-section, .agents-intro, .ag-info, .ag-top, .agent-grid-section > h2, .agent-grid-section > .eyebrow { text-shadow: var(--halo); }
+.glass, .glass *, .ag-more, .tile.main, .cta, .ag-status { text-shadow: none; }
 .dark { --cf-blue: rgb(58 120 255 / 0.26); --cf-lime: rgb(212 255 36 / 0.11); --cf-cyan: rgb(56 189 248 / 0.09); --cf-lime-2: rgb(212 255 36 / 0.07); }
 @keyframes cf-drift-1 { to { transform: translate(-6vmax, 5vmax) scale(1.08); } }
 @keyframes cf-drift-2 { to { transform: translate(7vmax, -4vmax) scale(1.12); } }
