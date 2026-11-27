@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Watch It Run</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400..700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Electrify tokens, mirrored from src/app/site.css */
+:root {
+  --bg: #f4f6fa; --ink: #0a0d14; --ink-soft: #545c6e; --em: #155bc9; --brand: #d4ff24; --brand-ink: #05070c;
+  --ok: #3f8f00; --g-tint: rgb(255 255 255 / 0.6); --g-rim: rgb(255 255 255 / 0.95); --line: rgb(10 20 50 / 0.1);
+  --g-shadow: 0 24px 60px -30px rgb(15 30 70 / 0.35); --grid: rgb(10 20 50 / 0.07);
+  --glow-a: rgb(21 91 201 / 0.22); --glow-b: rgb(127 174 0 / 0.2);
+  --code-kw: #155bc9; --code-str: #3f8f00; --code-com: #8a93a6; --muted-bg: rgb(10 20 50 / 0.04);
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+}
+.dark {
+  --bg: #030407; --ink: #f2f5fb; --ink-soft: #9aa3b5; --em: #d4ff24; --ok: #d4ff24;
+  --g-tint: rgb(16 22 40 / 0.45); --g-rim: rgb(255 255 255 / 0.12); --line: rgb(255 255 255 / 0.1);
+  --g-shadow: 0 30px 70px -30px rgb(0 0 0 / 0.9); --grid: rgb(255 255 255 / 0.06);
+  --glow-a: rgb(58 120 255 / 0.28); --glow-b: rgb(212 255 36 / 0.13);
+  --code-kw: #6f9dff; --code-str: #d4ff24; --code-com: #5d6578; --muted-bg: rgb(255 255 255 / 0.04);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--bg); color: var(--ink); font-family: Outfit, system-ui, sans-serif; -webkit-font-smoothing: antialiased; overflow-x: clip; }
+body { transition: background-color .3s ease, color .3s ease;
+  background-image: radial-gradient(var(--grid) 1px, transparent 1px); background-size: 28px 28px; background-attachment: fixed; }
+.mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+.glass { background: var(--g-tint); border: 1px solid var(--g-rim); box-shadow: var(--g-shadow);
+  -webkit-backdrop-filter: blur(14px) saturate(170%); backdrop-filter: blur(14px) saturate(170%); }
+.eyebrow { font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--em); font-weight: 500; }
+
+/* nav */
+.nav { position: fixed; z-index: 20; top: 14px; left: 50%; transform: translateX(-50%); width: min(1240px, calc(100% - 32px));
+  display: flex; align-items: center; justify-content: space-between; border-radius: 999px; padding: 8px 8px 8px 14px; }
+.mark { display: flex; align-items: center; gap: 10px; font-weight: 500; }
+.mark i { font-style: normal; width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center; background: var(--ink); color: var(--bg); font-weight: 600; }
+.nav button { font: inherit; font-size: 14px; cursor: pointer; border: 1px solid var(--line); background: transparent; color: var(--ink); border-radius: 999px; padding: 8px 14px; transition: transform .15s var(--ease-out); }
+.nav button:active { transform: scale(.97); }
+
+/* intro + outro stubs */
+.stub { min-height: 90vh; display: grid; place-items: center; text-align: center; padding: 120px 16px 60px; }
+.stub h1 { font-size: clamp(40px, 6vw, 80px); line-height: 1.02; letter-spacing: -.035em; font-weight: 500; margin-top: 14px; }
+.stub h1 em { font-style: normal; color: var(--em); }
+.stub p { margin: 18px auto 0; max-width: 36em; font-size: 19px; line-height: 1.5; color: var(--ink-soft); }
+.cue { margin-top: 36px; display: inline-flex; gap: 10px; align-items: center; font-size: 14px; color: var(--ink-soft); }
+.cue span { width: 22px; height: 34px; border: 1.5px solid var(--line); border-radius: 12px; position: relative; }
+.cue span::after { content: ""; position: absolute; left: 50%; top: 7px; width: 3px; height: 7px; border-radius: 2px; background: var(--em); transform: translateX(-50%); animation: cue 1.6s var(--ease-out) infinite; }
+@keyframes cue { 0% { opacity: 0; transform: translate(-50%, 0); } 30% { opacity: 1; } 100% { opacity: 0; transform: translate(-50%, 10px); } }
+
+/* ── the run ─────────────────────────────────────────────── */
+.run { position: relative; }
+.run-inner { height: 100vh; max-width: 1280px; margin: 0 auto; padding: 88px 24px 24px; display: grid; grid-template-rows: auto auto 1fr auto; gap: 18px; position: relative; }
+.glow { position: absolute; z-index: -1; border-radius: 50%; filter: blur(70px); pointer-events: none; }
+.glow.a { width: 520px; height: 420px; left: 10%; top: 34%; background: var(--glow-a); }
+.glow.b { width: 420px; height: 360px; right: 12%; top: 42%; background: var(--glow-b); }
+
+.run-head { display: flex; align-items: end; justify-content: space-between; gap: 24px; }
+.titles { position: relative; height: 52px; flex: 1; overflow: hidden; margin-top: 8px; }
+.titles h2 { position: absolute; inset: 0; font-size: clamp(26px, 3.2vw, 42px); letter-spacing: -.03em; font-weight: 500; line-height: 1.2; white-space: nowrap; }
+.titles h2 b { font-weight: 500; color: var(--em); }
+.tag { font-size: 12px; color: var(--ink-soft); border: 1px solid var(--line); border-radius: 999px; padding: 5px 10px; white-space: nowrap; }
+
+/* rail */
+.rail { position: relative; display: grid; grid-template-columns: repeat(5, 1fr); list-style: none; }
+.rail::before, .rail-fill { content: ""; position: absolute; left: 10%; right: 10%; top: 9px; height: 2px; border-radius: 2px; background: var(--line); }
+.rail-fill { background: var(--em); transform-origin: left; transform: scaleX(0); }
+.rail li { position: relative; display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 13px; color: var(--ink-soft); transition: color .3s ease; }
+.rail li i { width: 20px; height: 20px; border-radius: 50%; background: var(--bg); border: 2px solid var(--line); position: relative; z-index: 1; display: grid; place-items: center; transition: border-color .3s ease, background-color .3s ease, transform .3s var(--ease-out); }
+.rail li i::after { content: ""; width: 6px; height: 6px; border-radius: 50%; background: transparent; transition: background-color .3s ease; }
+.rail li.done i { border-color: var(--em); background: var(--em); }
+.rail li.done i::after { background: var(--bg); }
+.rail li.active { color: var(--ink); }
+.rail li.active i { border-color: var(--em); transform: scale(1.2); }
+.rail li.active i::after { background: var(--em); }
+.rail small { font-size: 11px; color: var(--ink-soft); opacity: .8; }
+
+/* stage */
+.stage { position: relative; display: grid; grid-template-columns: 210px minmax(0, 1fr) 300px; gap: 20px; min-height: 0; }
+.sources { display: flex; flex-direction: column; gap: 10px; padding-top: 6px; }
+.sources h4, .trace h4 { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft); font-weight: 500; margin-bottom: 4px; }
+.src { display: flex; gap: 10px; align-items: center; border-radius: 14px; padding: 10px 12px; font-size: 14px; position: relative; }
+.src em { font-style: normal; font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 6px; background: var(--em); color: var(--brand-ink); }
+.dark .src em { color: var(--brand-ink); }
+:root:not(.dark) .src em { color: #fff; }
+.src span { display: block; line-height: 1.25; } .src small { display: block; font-size: 12px; color: var(--ink-soft); }
+.ghost { position: absolute; z-index: 6; pointer-events: none; font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 6px; background: var(--em); color: var(--brand-ink); opacity: 0; box-shadow: 0 0 0 6px rgb(212 255 36 / .15); }
+:root:not(.dark) .ghost { color: #fff; box-shadow: 0 0 0 6px rgb(21 91 201 / .15); }
+
+.doc { position: relative; border-radius: 22px; display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
+.bar { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--line); font-size: 13px; }
+.dots { display: flex; gap: 6px; } .dots b { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+.bar .file { color: var(--ink); } .bar .step { margin-left: auto; color: var(--ink-soft); }
+.body { position: relative; flex: 1; min-height: 0; }
+.pane { position: absolute; inset: 0; padding: 22px 26px; opacity: 0; overflow: hidden; }
+.pane .label { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 12px; }
+
+.story-card { border: 1px dashed var(--line); border-radius: 16px; padding: 22px; font-size: clamp(20px, 2vw, 26px); line-height: 1.4; letter-spacing: -.01em; min-height: 140px; }
+.caret { display: inline-block; width: 2px; height: 1em; background: var(--em); vertical-align: -0.12em; margin-left: 2px; animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.meta { margin-top: 14px; display: flex; gap: 8px; flex-wrap: wrap; }
+.meta span { font-size: 12px; border-radius: 999px; padding: 4px 10px; background: var(--muted-bg); color: var(--ink-soft); opacity: 0; }
+
+.sec { padding: 10px 0; border-bottom: 1px solid var(--line); opacity: 0; }
+.sec:last-child { border-bottom: 0; }
+.sec h5 { font-size: 13px; font-weight: 500; color: var(--ink-soft); margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+.sec p { font-size: 15px; line-height: 1.45; }
+.cite { font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 6px; border: 1px dashed var(--em); color: var(--em); opacity: .35; transition: none; }
+.cite.on { background: var(--em); color: var(--brand-ink); border-style: solid; opacity: 1; }
+:root:not(.dark) .cite.on { color: #fff; }
+
+.code { font-size: 13.5px; line-height: 1.65; }
+.code div { min-height: 1.65em; white-space: pre; }
+.kw { color: var(--code-kw); } .str { color: var(--code-str); } .com { color: var(--code-com); font-style: italic; }
+
+.tests { list-style: none; display: grid; gap: 8px; }
+.tests li { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 12px; background: var(--muted-bg); font-size: 15px; }
+.tests li .st { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--line); display: grid; place-items: center; position: relative; flex: none; }
+.tests li .st svg { width: 13px; height: 13px; opacity: 0; transform: scale(.4); }
+.tests li .st b { position: absolute; inset: -2px; border-radius: 50%; background: var(--ok); opacity: 0; transform: scale(.4); }
+.tests li .st svg { position: relative; z-index: 1; stroke: var(--brand-ink); }
+:root:not(.dark) .tests li .st svg { stroke: #fff; }
+.tests li small { margin-left: auto; font-size: 12px; color: var(--ink-soft); }
+.score { margin-top: 14px; font-size: 14px; color: var(--ink-soft); opacity: 0; }
+.score b { color: var(--ok); font-weight: 600; }
+
+/* human checkpoint stamp */
+.stamp { position: absolute; z-index: 5; right: 18px; bottom: 18px; display: flex; align-items: center; gap: 10px; padding: 8px 14px 8px 8px; border-radius: 999px;
+  background: var(--brand); color: var(--brand-ink); font-size: 14px; font-weight: 500; opacity: 0; box-shadow: 0 14px 30px -12px rgb(212 255 36 / .5); }
+:root:not(.dark) .stamp { box-shadow: 0 14px 30px -14px rgb(60 80 0 / .45); }
+.stamp img { width: 30px; height: 30px; border-radius: 50%; background: #fff; object-fit: cover; }
+.stamp small { display: block; font-size: 11px; opacity: .7; font-weight: 400; }
+
+/* trace */
+.trace { border-radius: 22px; padding: 16px; display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
+.trace ul { list-style: none; display: flex; flex-direction: column; gap: 7px; font-size: 12px; line-height: 1.45; overflow: hidden; }
+.trace li { opacity: 0; color: var(--ink-soft); display: flex; gap: 8px; }
+.trace li b { font-weight: 500; color: var(--em); flex: none; width: 64px; }
+.trace li.h b { color: var(--ok); }
+.trace li.h { color: var(--ink); }
+
+.outcome { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+.outcome span { font-size: 14px; border-radius: 999px; padding: 8px 16px; opacity: 0; }
+.outcome b { font-weight: 500; color: var(--em); }
+
+/* theme + responsive */
+@media (max-width: 900px) {
+  .run-inner { padding: 76px 16px 16px; gap: 12px; }
+  .stage { grid-template-columns: 1fr; grid-template-rows: auto 1fr; gap: 10px; }
+  .sources { flex-direction: row; overflow: hidden; padding-top: 0; } .sources h4 { display: none; }
+  .src { padding: 6px 10px; font-size: 12px; flex: 1; } .src small { display: none; }
+  .trace { display: none; }
+  .rail small { display: none; } .rail li { font-size: 11px; }
+  .tag { display: none; }
+  .titles { height: 58px; } .titles h2 { white-space: normal; font-size: 22px; }
+  .src span { font-size: 12px; }
+  .pane { padding: 16px; } .code { font-size: 11px; }
+  .outcome span { font-size: 12px; padding: 6px 10px; }
+  .glow { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .cue span::after, .caret { animation: none; } }
+</style>
+</head>
+<body>
+<nav class="nav glass"><div class="mark"><i>S</i>Sangamesh</div><button id="theme" type="button">Light / dark</button></nav>
+
+<section class="stub">
+  <div>
+    <p class="eyebrow">The MVP</p>
+    <h1>HITL SAP Automation Platform.<br><em>Scroll to run it.</em></h1>
+    <p>A chain of agents that carries a change from a user story to tested code, with a person checking the work after every agent.</p>
+    <div class="cue"><span></span>Scroll</div>
+  </div>
+</section>
+
+<section class="run" id="run">
+  <div class="run-inner">
+    <div class="glow a"></div><div class="glow b"></div>
+
+    <div class="run-head">
+      <div style="flex:1;min-width:0">
+        <p class="eyebrow">Live run</p>
+        <div class="titles">
+          <h2>A <b>user story</b> comes in.</h2>
+          <h2>The <b>FSD agent</b> drafts the functional spec.</h2>
+          <h2>The <b>TSD agent</b> grounds it in real context.</h2>
+          <h2>The <b>code agent</b> writes the ABAP.</h2>
+          <h2>The <b>test agent</b> proves it works.</h2>
+        </div>
+      </div>
+      <span class="tag">Illustrative example · not client data</span>
+    </div>
+
+    <ol class="rail">
+      <div class="rail-fill"></div>
+      <li><i></i>User story<small>Intake</small></li>
+      <li><i></i>Functional spec<small>FSD agent</small></li>
+      <li><i></i>Technical spec<small>TSD agent</small></li>
+      <li><i></i>ABAP code<small>Code agent</small></li>
+      <li><i></i>Test cases<small>Test agent</small></li>
+    </ol>
+
+    <div class="stage">
+      <aside class="sources">
+        <h4>Grounding</h4>
+        <div class="src glass" data-src="KB"><em>KB</em><div><span>Consultant knowledge base</span><small>Patterns, past designs</small></div></div>
+        <div class="src glass" data-src="STD"><em>STD</em><div><span>Client standards</span><small>Naming + coding rules</small></div></div>
+        <div class="src glass" data-src="ADT"><em>ADT</em><div><span>SAP ADT, live</span><small>Real object context</small></div></div>
+      </aside>
+
+      <div class="doc glass">
+        <div class="bar mono"><div class="dots"><b></b><b></b><b></b></div><span class="file">story.md</span><span class="step">1 / 5</span></div>
+        <div class="body">
+          <!-- 1 · story -->
+          <div class="pane" data-pane="0">
+            <p class="label mono">User story</p>
+            <div class="story-card"><span class="typed" data-text="As a collections manager, I want overdue invoices flagged every morning, so my team knows who to follow up with first."></span><span class="caret"></span></div>
+            <div class="meta mono"><span>priority: high</span><span>module: FI</span><span>requested by: business</span></div>
+          </div>
+          <!-- 2 · FSD -->
+          <div class="pane" data-pane="1">
+            <p class="label mono">Functional spec · draft</p>
+            <div class="sec"><h5>Purpose</h5><p>Flag open customer invoices that are past their due date, once a day.</p></div>
+            <div class="sec"><h5>Business rules</h5><p>Overdue means the due date is before today. Paid or cleared items are ignored.</p></div>
+            <div class="sec"><h5>Output</h5><p>A list for the collections team, sorted by amount and days overdue.</p></div>
+            <div class="sec"><h5>Schedule</h5><p>Runs automatically every morning before the team starts.</p></div>
+          </div>
+          <!-- 3 · TSD -->
+          <div class="pane" data-pane="2">
+            <p class="label mono">Technical spec · grounded</p>
+            <div class="sec"><h5>Design pattern <span class="cite" data-cite="KB">KB</span></h5><p>Daily background job, following the consultant playbook for FI reports.</p></div>
+            <div class="sec"><h5>Objects <span class="cite" data-cite="STD">STD</span></h5><p class="mono" style="font-size:14px">ZCL_FI_OVERDUE_FLAG · ZI_OPEN_ITEMS</p></div>
+            <div class="sec"><h5>Data source <span class="cite" data-cite="ADT">ADT</span></h5><p>Reads open items through the existing CDS view found in the live system.</p></div>
+            <div class="sec"><h5>Error handling</h5><p>Empty result is a valid run; failures are logged for review.</p></div>
+          </div>
+          <!-- 4 · ABAP -->
+          <div class="pane" data-pane="3">
+            <p class="label mono">zcl_fi_overdue_flag.abap</p>
+            <div class="code mono">
+<div><span class="kw">CLASS</span> zcl_fi_overdue_flag <span class="kw">DEFINITION PUBLIC FINAL</span>.</div>
+<div>  <span class="kw">PUBLIC SECTION</span>.</div>
+<div>    <span class="kw">METHODS</span> run <span class="kw">IMPORTING</span> iv_key_date <span class="kw">TYPE</span> d.</div>
+<div><span class="kw">ENDCLASS</span>.</div>
+<div></div>
+<div><span class="kw">CLASS</span> zcl_fi_overdue_flag <span class="kw">IMPLEMENTATION</span>.</div>
+<div>  <span class="kw">METHOD</span> run.</div>
+<div>    <span class="kw">SELECT</span> * <span class="kw">FROM</span> zi_open_items</div>
+<div>      <span class="kw">WHERE</span> due_date &lt; @iv_key_date</div>
+<div>      <span class="kw">INTO TABLE</span> @<span class="kw">DATA</span>(lt_overdue).</div>
+<div>    <span class="com">" flag for collections follow-up</span></div>
+<div>  <span class="kw">ENDMETHOD</span>.</div>
+<div><span class="kw">ENDCLASS</span>.</div>
+            </div>
+          </div>
+          <!-- 5 · tests -->
+          <div class="pane" data-pane="4">
+            <p class="label mono">Test cases</p>
+            <ul class="tests">
+              <li><span class="st"><b></b><svg viewBox="0 0 24 24" fill="none" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span>Due yesterday → flagged<small class="mono">unit</small></li>
+              <li><span class="st"><b></b><svg viewBox="0 0 24 24" fill="none" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span>Due today → not flagged<small class="mono">unit</small></li>
+              <li><span class="st"><b></b><svg viewBox="0 0 24 24" fill="none" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span>Paid invoice → ignored<small class="mono">unit</small></li>
+              <li><span class="st"><b></b><svg viewBox="0 0 24 24" fill="none" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span>No open items → clean run<small class="mono">edge</small></li>
+              <li><span class="st"><b></b><svg viewBox="0 0 24 24" fill="none" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></span>Morning schedule fires once<small class="mono">integration</small></li>
+            </ul>
+            <p class="score mono"><b>5 / 5</b> passing · ready for the release check</p>
+          </div>
+
+          <div class="stamp"><img src="memoji.png" alt=""><div>Human checkpoint<small>Reviewed &amp; approved</small></div></div>
+        </div>
+      </div>
+
+      <aside class="trace glass mono">
+        <h4>Run trace</h4>
+        <ul>
+          <li data-s="0"><b>intake</b>story received, parsed</li>
+          <li data-s="0" class="h"><b>human</b>scope confirmed ✓</li>
+          <li data-s="1"><b>fsd</b>drafting 4 sections</li>
+          <li data-s="1" class="h"><b>human</b>FSD approved ✓</li>
+          <li data-s="2"><b>retrieve</b>BM25 + semantic search</li>
+          <li data-s="2"><b>rerank</b>best chunks kept</li>
+          <li data-s="2"><b>adt</b>live object context read</li>
+          <li data-s="2" class="h"><b>human</b>TSD approved ✓</li>
+          <li data-s="3"><b>code</b>class + method generated</li>
+          <li data-s="3"><b>lint</b>naming rules applied</li>
+          <li data-s="3" class="h"><b>human</b>code reviewed ✓</li>
+          <li data-s="4"><b>tests</b>5 cases generated</li>
+          <li data-s="4" class="h"><b>human</b>release approved ✓</li>
+        </ul>
+      </aside>
+    </div>
+
+    <div class="outcome">
+      <span class="glass"><b>80–90%</b> accurate TSD drafts</span>
+      <span class="glass">A <b>human checkpoint</b> after every agent</span>
+      <span class="glass">Quick edits applied <b>in place</b></span>
+    </div>
+  </div>
+</section>
+
+<section class="stub">
+  <div>
+    <p class="eyebrow">Next</p>
+    <h1>Experience</h1>
+    <p>The page carries on here. Scroll back up and the run rewinds.</p>
+  </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+<script>
+gsap.registerPlugin(ScrollTrigger);
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+document.getElementById('theme').addEventListener('click', () => document.documentElement.classList.toggle('dark'));
+
+if (!reduce && window.Lenis) {
+  const lenis = new Lenis({ lerp: 0.1 });
+  lenis.on('scroll', ScrollTrigger.update);
+  gsap.ticker.add((t) => lenis.raf(t * 1000));
+  gsap.ticker.lagSmoothing(0);
+}
+
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const run = $('#run');
+const panes = $$('.pane', run);
+const titles = $$('.titles h2', run);
+const railItems = $$('.rail li', run);
+const stamp = $('.stamp', run);
+const fileEl = $('.bar .file', run), stepEl = $('.bar .step', run);
+const FILES = ['story.md', 'FSD_overdue_flag.docx', 'TSD_overdue_flag.docx', 'zcl_fi_overdue_flag.abap', 'test_overdue_flag'];
+
+/* scrubbable text helpers: state is a pure function of progress, so scrolling back rewinds cleanly */
+function typeText(el, tl, at, dur) {
+  const full = el.dataset.text; el.textContent = '';
+  const o = { p: 0 };
+  tl.to(o, { p: 1, duration: dur, ease: 'none', onUpdate() { el.textContent = full.slice(0, Math.round(o.p * full.length)); } }, at);
+}
+const GLYPHS = 'abcdefghijklmnopqrstuvwxyz_@{}<>=;:#*';
+function decodeLine(line, tl, at, dur) {
+  const html = line.innerHTML, plain = line.textContent;
+  line.textContent = '';
+  const o = { p: 0 };
+  tl.to(o, { p: 1, duration: dur, ease: 'none', onUpdate() {
+    const p = o.p;
+    if (p >= 1) { line.innerHTML = html; return; }
+    if (p <= 0) { line.textContent = ''; return; }
+    const n = plain.length, done = Math.floor(p * n);
+    let s = plain.slice(0, done);
+    for (let i = done; i < Math.min(n, done + 10); i++) s += plain[i] === ' ' ? ' ' : GLYPHS[(i * 7 + Math.floor(p * 90)) % GLYPHS.length];
+    line.textContent = s;
+  } }, at);
+}
+
+/* stage geometry: each stage is 1 unit of timeline time */
+const tl = gsap.timeline({ defaults: { ease: 'power2.out' }, onUpdate: syncChrome });
+
+let current = -1;
+const CITES = [];
+function syncChrome() {
+  const time = tl.time();
+  CITES.forEach((c) => c.el.classList.toggle('on', time >= c.at));
+  const i = Math.max(0, Math.min(4, Math.floor(time)));
+  const fill = Math.min(1, tl.time() / 5);
+  gsap.set('.rail-fill', { scaleX: fill * 1 });
+  if (i === current) return;
+  current = i;
+  fileEl.textContent = FILES[i]; stepEl.textContent = `${i + 1} / 5`;
+  railItems.forEach((li, k) => { li.classList.toggle('done', k < i); li.classList.toggle('active', k === i); });
+}
+
+function stageIn(i) {
+  const at = i;
+  tl.fromTo(panes[i], { autoAlpha: 0, filter: 'blur(8px)' }, { autoAlpha: 1, filter: 'blur(0px)', duration: 0.12 }, at);
+  tl.fromTo(titles[i], { yPercent: 100, autoAlpha: 0 }, { yPercent: 0, autoAlpha: 1, duration: 0.12 }, at);
+  if (i > 0) {
+    tl.to(panes[i - 1], { autoAlpha: 0, filter: 'blur(8px)', duration: 0.1 }, at - 0.02);
+    tl.to(titles[i - 1], { yPercent: -100, autoAlpha: 0, duration: 0.12 }, at);
+  }
+  // trace lines for this stage
+  const lines = $$(`.trace li[data-s="${i}"]`, run);
+  lines.forEach((li, k) => {
+    const human = li.classList.contains('h');
+    tl.fromTo(li, { autoAlpha: 0, x: -8 }, { autoAlpha: 1, x: 0, duration: 0.06 }, human ? at + 0.8 : at + 0.12 + k * 0.16);
+  });
+  // human checkpoint stamp at the end of the stage
+  tl.fromTo(stamp, { autoAlpha: 0, scale: 0.6, y: 10 }, { autoAlpha: 1, scale: 1, y: 0, duration: 0.08, ease: 'back.out(2.2)' }, at + 0.78);
+  tl.to(stamp, { autoAlpha: 0, scale: 0.9, duration: 0.05 }, at + 0.97);
+}
+
+// everything starts hidden (the timeline owns their visibility)
+gsap.set([...panes, ...titles, '.trace li', stamp, '.outcome span'], { autoAlpha: 0 });
+
+// 1 · story types itself in
+stageIn(0);
+typeText($('.typed', run), tl, 0.12, 0.5);
+$$('.meta span', run).forEach((s, k) => tl.fromTo(s, { autoAlpha: 0, y: 6 }, { autoAlpha: 1, y: 0, duration: 0.05 }, 0.62 + k * 0.04));
+
+// 2 · FSD sections draft one by one
+stageIn(1);
+$$('.sec', panes[1]).forEach((s, k) => tl.fromTo(s, { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.1 }, 1.12 + k * 0.14));
+
+// 3 · TSD: grounding sources fly in and become citations
+stageIn(2);
+const tsdSecs = $$('.sec', panes[2]);
+tsdSecs.forEach((s, k) => tl.fromTo(s, { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.08 }, 2.1 + k * 0.05));
+const stageEl = $('.stage', run);
+['KB', 'STD', 'ADT'].forEach((key, k) => {
+  const src = $(`.src[data-src="${key}"]`, run), cite = $(`.cite[data-cite="${key}"]`, run);
+  const badge = $('em', src);
+  const ghost = document.createElement('span'); ghost.className = 'ghost'; ghost.textContent = key; stageEl.appendChild(ghost);
+  const rel = (el) => { const a = el.getBoundingClientRect(), b = stageEl.getBoundingClientRect(); return { x: a.left - b.left, y: a.top - b.top }; };
+  const at = 2.3 + k * 0.14;
+  tl.fromTo(src, { scale: 1 }, { scale: 1.04, duration: 0.04, yoyo: true, repeat: 1 }, at - 0.04);
+  tl.fromTo(ghost,
+    { autoAlpha: 1, x: () => rel(badge).x, y: () => rel(badge).y },
+    { x: () => rel(cite).x, y: () => rel(cite).y, duration: 0.14, ease: 'power3.inOut', immediateRender: false }, at);
+  tl.to(ghost, { autoAlpha: 0, duration: 0.02 }, at + 0.14);
+  CITES.push({ el: cite, at: at + 0.14 });
+});
+tl.set($$('.ghost', run), { autoAlpha: 0 }, 2);
+
+// 4 · code decodes into place
+stageIn(3);
+$$('.code div', panes[3]).forEach((line, k) => { if (line.textContent.trim()) decodeLine(line, tl, 3.1 + k * 0.045, 0.12); });
+
+// 5 · tests tick green
+stageIn(4);
+$$('.tests li', panes[4]).forEach((li, k) => {
+  const at = 4.12 + k * 0.11;
+  tl.fromTo(li, { autoAlpha: 0, x: 12 }, { autoAlpha: 1, x: 0, duration: 0.06 }, at);
+  tl.fromTo($('.st b', li), { autoAlpha: 0, scale: 0.4 }, { autoAlpha: 1, scale: 1, duration: 0.06, ease: 'back.out(2)' }, at + 0.07);
+  tl.fromTo($('.st svg', li), { autoAlpha: 0, scale: 0.4 }, { autoAlpha: 1, scale: 1, duration: 0.05 }, at + 0.09);
+});
+tl.fromTo($('.score', run), { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.06 }, 4.7);
+
+// outro: outcomes rise, rail completes
+$$('.outcome span', run).forEach((s, k) => tl.fromTo(s, { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.12 }, 5 + k * 0.08));
+tl.to({}, { duration: 0.4 }, 5.2);
+
+ScrollTrigger.create({
+  trigger: run, start: 'top top', end: () => '+=' + Math.round(innerHeight * (innerWidth < 900 ? 4.5 : 6)),
+  pin: true, scrub: reduce ? true : 0.7, animation: tl, invalidateOnRefresh: true,
+});
+syncChrome();
+</script>
+</body>
+</html>

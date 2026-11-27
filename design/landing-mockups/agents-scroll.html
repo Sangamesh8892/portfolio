@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agents I've Built</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400..700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Electrify tokens, mirrored from src/app/site.css */
+:root {
+  --bg: #f4f6fa; --ink: #0a0d14; --ink-soft: #545c6e; --em: #155bc9; --brand: #d4ff24; --brand-ink: #05070c; --on-em: #fff;
+  --ok: #3f8f00; --g-tint: rgb(255 255 255 / 0.62); --g-rim: rgb(255 255 255 / 0.95); --line: rgb(10 20 50 / 0.1);
+  --g-shadow: 0 24px 60px -30px rgb(15 30 70 / 0.35); --grid: rgb(10 20 50 / 0.07); --muted-bg: rgb(10 20 50 / 0.04);
+  --glow-a: rgb(21 91 201 / 0.2); --glow-b: rgb(127 174 0 / 0.18);
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+}
+.dark {
+  --bg: #030407; --ink: #f2f5fb; --ink-soft: #9aa3b5; --em: #d4ff24; --on-em: #05070c; --ok: #d4ff24;
+  --g-tint: rgb(16 22 40 / 0.45); --g-rim: rgb(255 255 255 / 0.12); --line: rgb(255 255 255 / 0.1);
+  --g-shadow: 0 30px 70px -30px rgb(0 0 0 / 0.9); --grid: rgb(255 255 255 / 0.06); --muted-bg: rgb(255 255 255 / 0.045);
+  --glow-a: rgb(58 120 255 / 0.26); --glow-b: rgb(212 255 36 / 0.12);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--bg); color: var(--ink); font-family: Outfit, system-ui, sans-serif; -webkit-font-smoothing: antialiased; overflow-x: clip; }
+body { transition: background-color .3s ease, color .3s ease;
+  background-image: radial-gradient(var(--grid) 1px, transparent 1px); background-size: 28px 28px; background-attachment: fixed; }
+.mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+/* liquid glass, same recipe as src/app/site.css: blurred backdrop + top rim + dispersion fringes + pointer sheen */
+:root {
+  --g-tint: rgb(255 255 255 / 0.38); --g-rim: rgb(255 255 255 / 1); --g-edge: rgb(20 50 130 / 0.09); --sheen: 0.7;
+  --g-shadow: 0 30px 60px -30px rgb(21 60 160 / 0.32), 0 2px 8px -3px rgb(21 60 160 / 0.1);
+  --disp-1: rgb(255 95 109 / 0.3); --disp-3: rgb(40 200 140 / 0.26); --disp-4: rgb(58 120 255 / 0.36);
+  --inner-bg: rgb(255 255 255 / 0.5); --inner-rim: inset 0 1px 0 rgb(255 255 255 / 0.95), 0 1px 3px rgb(20 40 90 / 0.07);
+}
+.dark {
+  --g-tint: rgb(16 22 40 / 0.42); --g-rim: rgb(255 255 255 / 0.22); --g-edge: rgb(255 255 255 / 0.08); --sheen: 0.09;
+  --g-shadow: 0 30px 70px -30px rgb(0 0 0 / 0.9);
+  --disp-1: rgb(255 95 109 / 0.22); --disp-3: rgb(71 255 176 / 0.18); --disp-4: rgb(58 120 255 / 0.3);
+  --inner-bg: rgb(255 255 255 / 0.045); --inner-rim: inset 0 1px 0 rgb(255 255 255 / 0.06);
+}
+.glass { position: relative; isolation: isolate; box-shadow: var(--g-shadow); }
+.glass::before { content: ""; position: absolute; inset: 0; z-index: -2; border-radius: inherit; background: var(--g-tint);
+  -webkit-backdrop-filter: blur(18px) saturate(185%); backdrop-filter: blur(18px) saturate(185%); }
+.glass::after { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
+  background: radial-gradient(280px circle at var(--mx, 25%) var(--my, -10%), rgb(255 255 255 / var(--sheen)), transparent 62%);
+  box-shadow: inset 0 0 0 1px var(--g-edge), inset 0 1.5px 0 0 var(--g-rim),
+    inset 1.25px 0 0 0 var(--disp-1), inset -1.25px 0 0 0 var(--disp-4), inset 0 -1.25px 0 0 var(--disp-3),
+    inset 0 -10px 22px -16px rgb(255 255 255 / 0.55); }
+
+/* colour field the glass refracts (drifts slowly; transform only) */
+.agents { position: relative; isolation: isolate; }
+.field { position: absolute; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+.field i { position: absolute; border-radius: 50%; will-change: transform; }
+.field .f1 { width: 62vmax; height: 62vmax; right: -14vmax; top: -6vmax; background: radial-gradient(closest-side, rgb(58 120 255 / .42), transparent); animation: drift1 26s ease-in-out infinite alternate; }
+.field .f2 { width: 46vmax; height: 46vmax; left: -10vmax; bottom: -18vmax; background: radial-gradient(closest-side, rgb(212 255 36 / .62), transparent); animation: drift2 30s ease-in-out infinite alternate; }
+.field .f3 { width: 34vmax; height: 34vmax; left: 34%; top: 30%; background: radial-gradient(closest-side, rgb(56 189 248 / .34), transparent); animation: drift3 22s ease-in-out infinite alternate; }
+.field .f4 { width: 22vmax; height: 22vmax; right: 18%; bottom: -4vmax; background: radial-gradient(closest-side, rgb(212 255 36 / .5), transparent); animation: drift1 34s ease-in-out infinite alternate-reverse; }
+.dark .field .f1 { background: radial-gradient(closest-side, rgb(58 120 255 / .3), transparent); }
+.dark .field .f2 { background: radial-gradient(closest-side, rgb(212 255 36 / .13), transparent); }
+.dark .field .f3 { background: radial-gradient(closest-side, rgb(56 189 248 / .1), transparent); }
+.dark .field .f4 { background: radial-gradient(closest-side, rgb(212 255 36 / .08), transparent); }
+@keyframes drift1 { to { transform: translate(-6vmax, 5vmax) scale(1.08); } }
+@keyframes drift2 { to { transform: translate(7vmax, -4vmax) scale(1.12); } }
+@keyframes drift3 { to { transform: translate(-8vmax, -6vmax) scale(.9); } }
+@media (prefers-reduced-motion: reduce) { .field i { animation: none; } }
+.eyebrow { font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--em); font-weight: 500; }
+.ph { border: 1px dashed var(--line); border-radius: 6px; padding: 0 6px; color: var(--ink-soft); font-style: normal; }
+
+.nav { position: fixed; z-index: 20; top: 14px; left: 50%; transform: translateX(-50%); width: min(1240px, calc(100% - 32px));
+  display: flex; align-items: center; justify-content: space-between; border-radius: 999px; padding: 8px 8px 8px 14px; }
+.mark { display: flex; align-items: center; gap: 10px; font-weight: 500; }
+.mark i { font-style: normal; width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center; background: var(--ink); color: var(--bg); font-weight: 600; }
+.nav button { font: inherit; font-size: 14px; cursor: pointer; border: 1px solid var(--line); background: transparent; color: var(--ink); border-radius: 999px; padding: 8px 14px; transition: transform .15s var(--ease-out); }
+.nav button:active { transform: scale(.97); }
+
+.stub { min-height: 80vh; display: grid; place-items: center; text-align: center; padding: 120px 16px 60px; }
+.stub h1 { font-size: clamp(40px, 6vw, 80px); line-height: 1.02; letter-spacing: -.035em; font-weight: 500; margin-top: 14px; }
+.stub h1 em { font-style: normal; color: var(--em); }
+.stub p { margin: 18px auto 0; max-width: 34em; font-size: 19px; line-height: 1.5; color: var(--ink-soft); }
+
+/* ── agents section ─────────────────────────────────────── */
+.agents-inner { height: 100vh; max-width: 1280px; margin: 0 auto; padding: 86px 24px 24px; display: grid; grid-template-rows: auto 1fr; gap: 20px; position: relative; }
+.glow { position: absolute; z-index: -1; border-radius: 50%; filter: blur(80px); pointer-events: none; }
+.glow.a { width: 560px; height: 440px; right: 8%; top: 26%; background: var(--glow-a); }
+.glow.b { width: 380px; height: 320px; left: 8%; bottom: 6%; background: var(--glow-b); }
+
+.top { display: flex; align-items: center; gap: 16px; }
+.count { font-size: 13px; color: var(--ink-soft); white-space: nowrap; min-width: 92px; }
+.count b { color: var(--ink); font-weight: 500; }
+.tabs { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; flex: 1; }
+.tabs button { font: inherit; font-size: 13px; cursor: pointer; white-space: nowrap; border: 1px solid var(--line); background: transparent; color: var(--ink-soft);
+  border-radius: 999px; padding: 7px 12px; position: relative; overflow: hidden; transition: color .25s ease, border-color .25s ease, transform .15s var(--ease-out); }
+.tabs button:active { transform: scale(.97); }
+.tabs button i { position: absolute; left: 0; bottom: 0; height: 2px; width: 100%; background: var(--em); transform-origin: left; transform: scaleX(0); }
+.tabs button.on { color: var(--ink); border-color: var(--em); }
+.grows { font-size: 12px; color: var(--ink-soft); white-space: nowrap; }
+
+.chapters { position: relative; min-height: 0; }
+.chapter { position: absolute; inset: 0; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 28px; visibility: hidden; }
+
+.info { display: flex; flex-direction: column; justify-content: center; min-height: 0; }
+.info .no { font-size: 13px; color: var(--ink-soft); }
+.info h2 { margin-top: 8px; font-size: clamp(34px, 4.2vw, 58px); line-height: 1.02; letter-spacing: -.035em; font-weight: 500; }
+.status { margin-top: 14px; display: inline-flex; align-items: center; gap: 8px; font-size: 13px; padding: 5px 12px 5px 10px; border-radius: 999px; border: 1px solid var(--line); width: fit-content; }
+.status::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--ink-soft); }
+.status.live::before { background: #22c55e; box-shadow: 0 0 0 4px rgb(34 197 94 / .18); }
+.lede { margin-top: 18px; font-size: 18px; line-height: 1.5; color: var(--ink-soft); max-width: 30em; }
+.lede b { color: var(--ink); font-weight: 500; }
+.facts { margin-top: 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.fact { border-radius: 16px; padding: 14px; }
+.fact h4 { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft); font-weight: 500; margin-bottom: 6px; }
+.fact p { font-size: 15px; line-height: 1.4; }
+.fact.result p { font-size: 15px; }
+.fact.result p b { display: block; font-size: 30px; letter-spacing: -.02em; font-weight: 500; color: var(--em); line-height: 1.1; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chips span { font-size: 12px; padding: 3px 9px; border-radius: 999px; background: var(--muted-bg); color: var(--ink-soft); }
+
+.demo { border-radius: 22px; display: flex; flex-direction: column; min-height: 0; overflow: hidden; align-self: center; max-height: 100%; }
+@media (min-width: 901px) { .demo { min-height: 460px; } .stage { justify-content: center; } }
+.bar { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--line); font-size: 13px; }
+.dots { display: flex; gap: 6px; } .dots b { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+.bar .hint { margin-left: auto; color: var(--ink-soft); font-size: 12px; }
+.stage { position: relative; flex: 1; min-height: 0; padding: 22px; display: flex; flex-direction: column; gap: 14px; }
+.lbl { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft); }
+
+/* shared demo bits: frosted inner panels */
+.card, .d-tsd .sec, .lane, .chunk, .query, .para:not(.dim), .tabs button, .status, .chips span {
+  background: var(--inner-bg); box-shadow: var(--inner-rim); }
+.card { border-radius: 14px; border: 1px solid var(--g-edge); padding: 14px; }
+.lane, .query { border-color: var(--g-edge) !important; }
+.lane.pick { border-color: var(--em) !important; }
+.badge, .cite { background: var(--brand) !important; color: var(--brand-ink) !important; }
+:root:not(.dark) .badge { box-shadow: 0 8px 20px -10px rgb(90 120 0 / .55); }
+:root:not(.dark) .fact.result p b { background: linear-gradient(100deg, #155bc9, #2f8fd8); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.line { height: 8px; border-radius: 4px; background: var(--line); }
+.cite { font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 6px; background: var(--em); color: var(--on-em); }
+.arrow { align-self: center; color: var(--em); font-size: 20px; }
+.meter { height: 8px; border-radius: 4px; background: var(--line); position: relative; overflow: hidden; }
+.meter i { position: absolute; inset: 0; background: var(--em); transform-origin: left; transform: scaleX(0); border-radius: 4px; }
+.typed:empty::after { content: "\200b"; }
+
+/* fsd-tsd */
+.d-tsd { display: grid; grid-template-columns: 1fr auto 1.35fr; gap: 14px; align-items: stretch; }
+.d-tsd .card { display: flex; flex-direction: column; gap: 9px; }
+.d-tsd .sec { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 10px; border-radius: 10px; background: var(--muted-bg); font-size: 13px; }
+/* quick edit */
+.prompt { display: flex; align-items: center; gap: 10px; border-radius: 12px; padding: 10px 12px; border: 1px solid var(--em); font-size: 14px; }
+.prompt em { font-style: normal; color: var(--em); }
+.para { font-size: 14px; line-height: 1.5; padding: 8px 10px; border-radius: 10px; transition: none; }
+.para.dim { color: var(--ink-soft); }
+.para .old { text-decoration: line-through; text-decoration-color: #f87171; color: var(--ink-soft); }
+.para .new { background: color-mix(in oklab, var(--em) 22%, transparent); border-radius: 4px; padding: 0 2px; }
+.badge { font-size: 12px; padding: 4px 10px; border-radius: 999px; background: var(--em); color: var(--on-em); width: fit-content; }
+/* router */
+.d-route { display: grid; grid-template-columns: 1fr 1.4fr; gap: 16px; align-items: center; flex: 1; }
+.req { font-size: 13px; line-height: 1.6; }
+.lanes { display: grid; gap: 10px; position: relative; }
+.lane { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 14px; border-radius: 12px; background: var(--muted-bg); border: 1px solid var(--line); font-size: 14px; }
+.lane small { font-size: 11px; color: var(--ink-soft); }
+.lane.pick { border-color: var(--em); }
+.auth { font-size: 11px; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--line); color: var(--ink-soft); }
+/* retrieval */
+.query { font-size: 14px; border-radius: 12px; padding: 10px 12px; border: 1px solid var(--line); }
+.chunks { display: grid; gap: 7px; }
+.chunk { display: grid; grid-template-columns: 1fr 70px 70px; gap: 10px; align-items: center; font-size: 13px; padding: 7px 10px; border-radius: 10px; background: var(--muted-bg); }
+.chunk .s { height: 6px; border-radius: 3px; background: var(--line); position: relative; overflow: hidden; }
+.chunk .s i { position: absolute; inset: 0; background: var(--em); transform-origin: left; transform: scaleX(0); }
+.chunk.top { outline: 1px solid var(--em); }
+.cols { display: grid; grid-template-columns: 1fr 70px 70px; gap: 10px; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft); padding: 0 10px; }
+/* generic */
+.d-gen { display: grid; grid-template-columns: 1fr auto 1fr; gap: 14px; flex: 1; align-items: start; }
+.d-gen ul { list-style: none; display: grid; gap: 8px; font-size: 14px; }
+.d-gen li { display: flex; gap: 8px; } .d-gen li::before { content: "→"; color: var(--em); }
+
+@media (max-width: 900px) {
+  .agents-inner { padding: 74px 16px 14px; gap: 12px; }
+  .grows, .count { display: none; }
+  .chapter { grid-template-columns: 1fr; grid-template-rows: auto 1fr; gap: 12px; }
+  .info h2 { font-size: 30px; } .lede { font-size: 14px; margin-top: 8px; } .status { margin-top: 8px; }
+  .facts { display: none; }
+  .stage { padding: 14px; gap: 10px; }
+  .d-tsd { grid-template-columns: 1fr; } .d-tsd .arrow { transform: rotate(90deg); }
+  .d-route, .d-gen { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<nav class="nav glass"><div class="mark"><i>S</i>Sangamesh</div><button id="theme" type="button">Light / dark</button></nav>
+
+<section class="stub"><div>
+  <p class="eyebrow">Agents</p>
+  <h1>Agents I've built.<br><em>Each one does a real job.</em></h1>
+  <p>Scroll through them one at a time: what it does, who it was for, and what it achieved.</p>
+</div></section>
+
+<section class="agents" id="agents">
+  <div class="field" aria-hidden="true"><i class="f1"></i><i class="f2"></i><i class="f3"></i><i class="f4"></i></div>
+  <div class="agents-inner">
+    <div class="top">
+      <span class="count mono"><b id="cur">01</b> / <span id="tot">04</span></span>
+      <div class="tabs" id="tabs"></div>
+      <span class="grows">New agents land here as I build them</span>
+    </div>
+    <div class="chapters" id="chapters"></div>
+  </div>
+</section>
+
+<section class="stub"><div><p class="eyebrow">Next</p><h1>Experience</h1><p>The page carries on here.</p></div></section>
+
+<script>
+/* ─────────────────────────────────────────────────────────────────────────
+   AGENTS: the only thing to edit. Add an object to add a chapter.
+   Anything wrapped in [brackets] renders as a dashed placeholder.
+   demo: 'tsd' | 'edit' | 'route' | 'retrieval' | 'generic'
+   ───────────────────────────────────────────────────────────────────────── */
+const AGENTS = [
+  {
+    name: 'FSD → TSD Agent', status: 'In production', live: true,
+    lede: 'Give it a <b>functional spec</b> and it writes the <b>technical spec</b>, grounded in the consultant knowledge base, the client\'s naming and coding standards, and live context from SAP ADT.',
+    client: '[Client name]', domain: 'SAP delivery · [module]',
+    result: { big: '80–90%', text: 'accurate first drafts' },
+    stack: ['SAP ADT', 'SAP AI Core', 'Hybrid RAG', 'LLM agents'],
+    demo: 'tsd',
+  },
+  {
+    name: 'Quick Edits', status: '[Status]',
+    lede: 'Ask for a change in plain words and it lands <b>in place</b> in seconds: targeted edits to a generated document, without regenerating the whole thing.',
+    client: '[Client name]', domain: 'SAP delivery · documents',
+    result: { big: '[x]', text: '[result, e.g. time saved per edit]' },
+    stack: ['LLM agents', 'Token optimisation'],
+    demo: 'edit',
+  },
+  {
+    name: 'Multi-cloud Model Layer', status: '[Status]',
+    lede: 'One way for agents to call models hosted on <b>SAP AI Core, Azure and Google Cloud</b>, including SAP AI Core authentication, so each task gets the right model.',
+    client: '[Client name]', domain: 'Platform',
+    result: { big: '3', text: 'model platforms behind one interface' },
+    stack: ['SAP AI Core', 'Azure', 'GCP'],
+    demo: 'route',
+  },
+  {
+    name: 'Retrieval Tuned for SAP', status: '[Status]',
+    lede: 'Chunking built around <b>how SAP specs are written</b>, hybrid BM25 + semantic retrieval with reranking, and token budgets that keep context tight and costs down.',
+    client: '[Client name]', domain: 'RAG · SAP documents',
+    result: { big: '[x]', text: '[result, e.g. retrieval accuracy]' },
+    stack: ['BM25', 'Embeddings', 'Reranking', 'Chunking'],
+    demo: 'retrieval',
+  },
+];
+
+const ph = (s) => String(s).replace(/\[([^\]]+)\]/g, '<em class="ph">$1</em>');
+const pad = (n) => String(n).padStart(2, '0');
+
+const DEMOS = {
+  tsd: () => `
+    <div class="bar mono"><div class="dots"><b></b><b></b><b></b></div>fsd_to_tsd<span class="hint">illustrative</span></div>
+    <div class="stage">
+      <div class="d-tsd">
+        <div class="card" data-a="in"><span class="lbl mono">Functional spec</span>
+          <div class="line" style="width:90%"></div><div class="line" style="width:75%"></div><div class="line" style="width:84%"></div><div class="line" style="width:60%"></div><div class="line" style="width:70%"></div></div>
+        <div class="arrow" data-a="arrow">→</div>
+        <div class="card"><span class="lbl mono">Technical spec</span>
+          <div class="sec" data-a="sec">Design pattern <span class="cite">KB</span></div>
+          <div class="sec" data-a="sec">Object names <span class="cite">STD</span></div>
+          <div class="sec" data-a="sec">Data source <span class="cite">ADT</span></div>
+          <div class="sec" data-a="sec">Error handling <span class="cite">KB</span></div></div>
+      </div>
+      <div data-a="meterwrap"><div class="lbl mono" style="margin-bottom:8px">First-draft accuracy · 80–90%</div><div class="meter"><i data-a="meter"></i></div></div>
+    </div>`,
+  edit: () => `
+    <div class="bar mono"><div class="dots"><b></b><b></b><b></b></div>TSD_draft.docx<span class="hint">illustrative</span></div>
+    <div class="stage">
+      <div class="prompt mono" data-a="prompt"><em>›</em><span class="typed" data-text="Make the error handling stricter: log and stop on failure."></span></div>
+      <div class="para dim">1 · Design pattern: daily background job.</div>
+      <div class="para dim">2 · Objects follow the client naming standard.</div>
+      <div class="para" data-a="target">3 · Error handling: <span class="old" data-a="old">empty results are skipped silently.</span> <span class="new" data-a="new">failures are logged and the run stops for review.</span></div>
+      <div class="para dim">4 · Output sent to the collections team.</div>
+      <div class="badge mono" data-a="badge">edited in place · 1 section · nothing regenerated</div>
+    </div>`,
+  route: () => `
+    <div class="bar mono"><div class="dots"><b></b><b></b><b></b></div>model_router<span class="hint">illustrative</span></div>
+    <div class="stage">
+      <div class="d-route">
+        <div class="card req mono" data-a="in"><span class="lbl">Request</span><br>task: draft_tsd<br>needs: long context<br>policy: client data stays in region</div>
+        <div class="lanes">
+          <div class="lane" data-a="lane"><span>SAP AI Core<br><small>auth · token refreshed</small></span><span class="auth mono" data-a="auth">auth ✓</span></div>
+          <div class="lane" data-a="lane"><span>Azure<br><small>regional deployment</small></span><span class="auth mono">ready</span></div>
+          <div class="lane" data-a="lane"><span>Google Cloud<br><small>fallback</small></span><span class="auth mono">ready</span></div>
+        </div>
+      </div>
+      <div class="badge mono" data-a="badge">routed → SAP AI Core · same interface for every agent</div>
+    </div>`,
+  retrieval: () => `
+    <div class="bar mono"><div class="dots"><b></b><b></b><b></b></div>retrieve<span class="hint">illustrative</span></div>
+    <div class="stage">
+      <div class="query mono" data-a="in">“naming rules for FI report classes”</div>
+      <div class="cols mono"><span>chunk</span><span>bm25</span><span>semantic</span></div>
+      <div class="chunks">
+        ${[['Naming standard §4: classes', .9, .85, 1], ['FI report pattern: playbook', .45, .9, 1], ['Coding standard: exceptions', .3, .55, 0], ['Old spec: invoice report', .7, .4, 1], ['Glossary: FI terms', .2, .3, 0]].map(([t, b, s, top]) =>
+          `<div class="chunk" data-a="chunk" data-top="${top}"><span>${t}</span><span class="s"><i data-b="${b}"></i></span><span class="s"><i data-b="${s}"></i></span></div>`).join('')}
+      </div>
+      <div class="badge mono" data-a="badge">reranked → top 3 kept · tight token budget</div>
+    </div>`,
+  generic: (a) => `
+    <div class="bar mono"><div class="dots"><b></b><b></b><b></b></div>${a.file || 'agent'}<span class="hint">illustrative</span></div>
+    <div class="stage"><div class="d-gen">
+      <div class="card" data-a="in"><span class="lbl mono">${a.input?.label || 'Input'}</span><p style="margin-top:8px;font-size:14px;line-height:1.5">${ph(a.input?.text || '[what goes in]')}</p></div>
+      <div class="arrow" data-a="arrow">→</div>
+      <div class="card"><span class="lbl mono">${a.output?.label || 'Output'}</span><ul style="margin-top:8px">${(a.output?.lines || ['[what comes out]']).map((l) => `<li data-a="sec">${ph(l)}</li>`).join('')}</ul></div>
+    </div></div>`,
+};
+
+/* render chapters from data */
+const chaptersEl = document.getElementById('chapters'), tabsEl = document.getElementById('tabs');
+document.getElementById('tot').textContent = pad(AGENTS.length);
+AGENTS.forEach((a, i) => {
+  const c = document.createElement('article');
+  c.className = 'chapter';
+  c.innerHTML = `
+    <div class="info">
+      <span class="no mono" data-i>Agent ${pad(i + 1)}</span>
+      <h2 data-i>${a.name}</h2>
+      <span class="status ${a.live ? 'live' : ''}" data-i>${ph(a.status)}</span>
+      <p class="lede" data-i>${ph(a.lede)}</p>
+      <div class="facts">
+        <div class="fact glass result" data-f><h4>Result</h4><p><b>${ph(a.result.big)}</b>${ph(a.result.text)}</p></div>
+        <div class="fact glass" data-f><h4>Client · domain</h4><p>${ph(a.client)}<br><span style="color:var(--ink-soft)">${ph(a.domain)}</span></p></div>
+        <div class="fact glass" data-f style="grid-column:span 2"><h4>Stack</h4><div class="chips">${a.stack.map((s) => `<span>${s}</span>`).join('')}</div></div>
+      </div>
+    </div>
+    <div class="demo glass">${(DEMOS[a.demo] || DEMOS.generic)(a)}</div>`;
+  chaptersEl.appendChild(c);
+  const b = document.createElement('button');
+  b.type = 'button'; b.innerHTML = `${a.name}<i></i>`;
+  tabsEl.appendChild(b);
+});
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+<script>
+gsap.registerPlugin(ScrollTrigger);
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+document.getElementById('theme').addEventListener('click', () => document.documentElement.classList.toggle('dark'));
+
+/* pointer sheen on glass (rAF-throttled, only for glass that is on screen) */
+let px = -9999, py = -9999, queued = false;
+addEventListener('pointermove', (e) => {
+  px = e.clientX; py = e.clientY;
+  if (queued) return; queued = true;
+  requestAnimationFrame(() => {
+    queued = false;
+    document.querySelectorAll('.glass').forEach((g) => {
+      const r = g.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > innerHeight || !r.width) return;
+      g.style.setProperty('--mx', `${px - r.left}px`); g.style.setProperty('--my', `${py - r.top}px`);
+    });
+  });
+}, { passive: true });
+
+let lenis = null;
+if (!reduce && window.Lenis) {
+  lenis = new Lenis({ lerp: 0.1 });
+  lenis.on('scroll', ScrollTrigger.update);
+  gsap.ticker.add((t) => lenis.raf(t * 1000));
+  gsap.ticker.lagSmoothing(0);
+}
+
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const chapters = $$('.chapter'), tabs = $$('#tabs button'), curEl = document.getElementById('cur');
+const N = chapters.length;
+
+function typeText(el, tl, at, dur) {
+  const full = el.dataset.text; el.textContent = '';
+  const o = { p: 0 };
+  tl.to(o, { p: 1, duration: dur, ease: 'none', onUpdate() { el.textContent = full.slice(0, Math.round(o.p * full.length)); } }, at);
+}
+const fadeUp = (tl, els, at, step = 0.04, d = 0.08) =>
+  els.forEach((el, k) => tl.fromTo(el, { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: d }, at + k * step));
+
+/* per-demo choreography inside one chapter's [t0, t0+1) window */
+const PLAY = {
+  tsd(c, tl, t) {
+    fadeUp(tl, $$('[data-a="in"]', c), t + 0.16);
+    tl.fromTo($$('[data-a="in"] .line', c), { scaleX: 0, transformOrigin: 'left' }, { scaleX: 1, duration: 0.06, stagger: 0.02 }, t + 0.2);
+    tl.fromTo($$('[data-a="arrow"]', c), { autoAlpha: 0, x: -10 }, { autoAlpha: 1, x: 0, duration: 0.05 }, t + 0.3);
+    fadeUp(tl, $$('[data-a="sec"]', c), t + 0.34, 0.07);
+    tl.fromTo($$('[data-a="sec"] .cite', c), { scale: 0, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.05, ease: 'back.out(3)', stagger: 0.07 }, t + 0.4);
+    fadeUp(tl, $$('[data-a="meterwrap"]', c), t + 0.62);
+    tl.fromTo($$('[data-a="meter"]', c), { scaleX: 0 }, { scaleX: 0.86, duration: 0.14, ease: 'power3.out' }, t + 0.64);
+  },
+  edit(c, tl, t) {
+    fadeUp(tl, $$('.para', c), t + 0.14, 0.03);
+    fadeUp(tl, $$('[data-a="prompt"]', c), t + 0.22);
+    typeText(c.querySelector('.typed'), tl, t + 0.26, 0.22);
+    tl.fromTo($$('[data-a="target"]', c), { backgroundColor: 'rgba(0,0,0,0)' }, { backgroundColor: 'color-mix(in oklab, var(--em) 10%, transparent)', duration: 0.05 }, t + 0.5);
+    tl.fromTo($$('[data-a="old"]', c), { textDecorationColor: 'transparent' }, { textDecorationColor: '#f87171', duration: 0.05 }, t + 0.54);
+    tl.fromTo($$('[data-a="new"]', c), { autoAlpha: 0, x: -6 }, { autoAlpha: 1, x: 0, duration: 0.08 }, t + 0.6);
+    tl.fromTo($$('[data-a="badge"]', c), { autoAlpha: 0, scale: 0.8 }, { autoAlpha: 1, scale: 1, duration: 0.06, ease: 'back.out(2.5)' }, t + 0.7);
+  },
+  route(c, tl, t) {
+    fadeUp(tl, $$('[data-a="in"]', c), t + 0.16);
+    fadeUp(tl, $$('[data-a="lane"]', c), t + 0.24, 0.05);
+    const lanes = $$('[data-a="lane"]', c);
+    tl.fromTo(lanes[0], { borderColor: 'var(--line)' }, { borderColor: 'var(--em)', duration: 0.05 }, t + 0.42);
+    tl.fromTo($$('[data-a="auth"]', c), { autoAlpha: 0.3 }, { autoAlpha: 1, duration: 0.04 }, t + 0.46);
+    tl.fromTo(lanes.slice(1), { autoAlpha: 1 }, { autoAlpha: 0.45, duration: 0.05 }, t + 0.5);
+    tl.fromTo($$('[data-a="badge"]', c), { autoAlpha: 0, scale: 0.8 }, { autoAlpha: 1, scale: 1, duration: 0.06, ease: 'back.out(2.5)' }, t + 0.6);
+  },
+  retrieval(c, tl, t) {
+    fadeUp(tl, $$('[data-a="in"], .cols', c), t + 0.14);
+    const chunks = $$('[data-a="chunk"]', c);
+    fadeUp(tl, chunks, t + 0.22, 0.03);
+    chunks.forEach((ch, k) => $$('.s i', ch).forEach((bar, j) =>
+      tl.fromTo(bar, { scaleX: 0 }, { scaleX: Number(bar.dataset.b), duration: 0.08 }, t + 0.32 + j * 0.06 + k * 0.015)));
+    chunks.forEach((ch) => {
+      const top = ch.dataset.top === '1';
+      tl.fromTo(ch, { autoAlpha: 1 }, { autoAlpha: top ? 1 : 0.3, duration: 0.05 }, t + 0.56);
+      if (top) tl.fromTo(ch, { outlineColor: 'transparent' }, { outlineColor: 'var(--em)', duration: 0.04 }, t + 0.58);
+    });
+    tl.fromTo($$('[data-a="badge"]', c), { autoAlpha: 0, scale: 0.8 }, { autoAlpha: 1, scale: 1, duration: 0.06, ease: 'back.out(2.5)' }, t + 0.66);
+  },
+  generic(c, tl, t) {
+    fadeUp(tl, $$('[data-a="in"]', c), t + 0.16);
+    tl.fromTo($$('[data-a="arrow"]', c), { autoAlpha: 0, x: -10 }, { autoAlpha: 1, x: 0, duration: 0.05 }, t + 0.3);
+    fadeUp(tl, $$('[data-a="sec"]', c), t + 0.36, 0.07);
+  },
+};
+
+const tl = gsap.timeline({ defaults: { ease: 'power2.out' }, onUpdate: sync });
+chapters.forEach((c, i) => {
+  const t = i;
+  // chapter in (the first one is already on screen when the section pins)
+  tl.set(c, { visibility: 'visible' }, t === 0 ? 0 : t - 0.001);
+  if (i > 0) tl.fromTo(c, { autoAlpha: 0, y: 60 }, { autoAlpha: 1, y: 0, duration: 0.12 }, t);
+  fadeUp(tl, $$('[data-i]', c), t + 0.02, 0.025, 0.1);
+  fadeUp(tl, $$('[data-f]', c), t + 0.12, 0.04, 0.1);
+  tl.fromTo(c.querySelector('.demo'), { autoAlpha: 0, scale: 0.97 }, { autoAlpha: 1, scale: 1, duration: 0.12 }, t + 0.04);
+  (PLAY[AGENTS[i].demo] || PLAY.generic)(c, tl, t);
+  tl.fromTo(tabs[i].querySelector('i'), { scaleX: 0 }, { scaleX: 1, duration: 1, ease: 'none' }, t);
+  // chapter out
+  if (i < N - 1) tl.to(c, { autoAlpha: 0, y: -60, duration: 0.1, ease: 'power2.in' }, t + 0.9);
+});
+tl.to({}, { duration: 0.1 }, N - 0.1);
+
+let current = -1;
+function sync() {
+  const i = Math.max(0, Math.min(N - 1, Math.floor(tl.time())));
+  if (i === current) return;
+  current = i;
+  curEl.textContent = String(i + 1).padStart(2, '0');
+  tabs.forEach((b, k) => b.classList.toggle('on', k === i));
+  tabs[i].scrollIntoView({ block: 'nearest', inline: 'center' });
+}
+
+const st = ScrollTrigger.create({
+  trigger: '#agents', start: 'top top', end: () => '+=' + Math.round(innerHeight * 1.6 * N),
+  pin: true, scrub: reduce ? true : 0.6, animation: tl, invalidateOnRefresh: true,
+});
+// tabs jump to that agent's chapter
+tabs.forEach((b, i) => b.addEventListener('click', () => {
+  const y = st.start + (st.end - st.start) * ((i + 0.72) / N);
+  lenis ? lenis.scrollTo(y, { duration: 1.2 }) : window.scrollTo({ top: y, behavior: reduce ? 'auto' : 'smooth' });
+}));
+sync();
+</script>
+</body>
+</html>
