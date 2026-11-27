@@ -2,16 +2,13 @@
  * GenAI "neural" background: two latent-space cores (point spheres with orbit
  * rings and a soft halo), an agent graph with token pulses hopping along its
  * edges, and attention lines from the cursor to the nodes it is near.
- * On the story page a third, smaller "agent core" travels with the scroll
- * (src/lib/core-poses.js) and flares each time it reaches an MVP station.
+ * The canvas is transparent, so the CSS colour field (ColorField) shows through.
  *
  * createNeuralScene(canvas, palette) -> { setPalette(palette), destroy() }
  * Colours ease toward a new palette; under reduced motion it renders one still
  * frame and re-renders only on pointer move or a palette change.
  */
 import * as THREE from 'three';
-import { CORE_POSES, corePose, easeCore, stationIndex } from './core-poses';
-import { getStory } from './story-store';
 
 const NOISE = /* glsl */ `
 vec3 mod289(vec3 x){return x-floor(x*(1./289.))*289.;}
@@ -43,7 +40,7 @@ const KEYS = ['bg', 'core', 'coreHot', 'node', 'edge', 'hot', 'pulse'];
 export function createNeuralScene(canvas, palette) {
   let renderer;
   try {
-    renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
+    renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
   } catch {
     return null; // no WebGL: the CSS background shows instead
   }
@@ -156,27 +153,9 @@ export function createNeuralScene(canvas, palette) {
     return { ...c, g, sphere, orbit };
   });
 
-  /* ---------- the agent core: travels the scroll story ---------- */
-  const agent = (() => {
-    const g = new THREE.Group();
-    const sphere = new THREE.Points(pointsGeo(fib(1800)), coreMat(0.14, 3.2, 4.2));
-    const orbit = new THREE.Points(pointsGeo(ring(240)), coreMat(0.015, 3.8, 7.2));
-    orbit.scale.setScalar(1.65);
-    const halo = new THREE.Mesh(haloGeo, haloMat);
-    halo.scale.setScalar(4.2);
-    halo.position.z = -0.2;
-    g.add(halo, sphere, orbit);
-    g.scale.setScalar(0);
-    scene.add(g);
-    return { g, sphere, orbit, halo };
-  })();
-  const agentState = { pos: [...CORE_POSES.hero.pos], scale: 0 };
-  let lastStation = -1;
-  let burst = 0;
-
   /* ---------- agent graph (centre kept clear for the headline) ---------- */
   const nodes = [];
-  while (nodes.length < 64) {
+  while (nodes.length < 48) {
     const x = (rnd() * 2 - 1) * 7.6, y = (rnd() * 2 - 1) * 4.1, z = -3 + rnd() * 4;
     if ((x / 3.4) ** 2 + (y / 2.5) ** 2 < 1) continue;
     if (CORES.some((c) => Math.hypot(x - c.x, y - c.y, z - c.z) < c.r * 1.8)) continue;
@@ -253,7 +232,7 @@ export function createNeuralScene(canvas, palette) {
   const attnL = lineSet(A);
 
   applyPalette(palette);
-  for (const c of [...CORES, agent]) {
+  for (const c of CORES) {
     for (const m of [c.sphere.material, c.orbit.material]) { m.uniforms.cA.value = cur.core; m.uniforms.cB.value = cur.coreHot; }
   }
   haloMat.uniforms.cA.value = cur.core;
@@ -301,7 +280,7 @@ export function createNeuralScene(canvas, palette) {
     last = t;
     const k = reduce ? 1 : 0.1;
     for (const key of KEYS) cur[key].lerp(tgt[key], k);
-    renderer.setClearColor(clear, 1);
+    renderer.setClearColor(clear, 0); // transparent: the CSS colour field shows through
 
     ptr.x += (ptr.tx - ptr.x) * (reduce ? 1 : 0.06);
     ptr.y += (ptr.ty - ptr.y) * (reduce ? 1 : 0.06);
@@ -371,34 +350,6 @@ export function createNeuralScene(canvas, palette) {
     }
     attnL.g.attributes.position.needsUpdate = true;
     attnL.g.attributes.color.needsUpdate = true;
-
-    // the agent core follows the story (hidden on pages without one)
-    const story = getStory();
-    const narrow = window.innerWidth < 768;
-    const hH1 = halfH * 0.9; // half height of the view at the core's depth (z=1, camera z=10)
-    const hW1 = hH1 * camera.aspect;
-    const track = story.track
-      ? { x0: story.track.x0 * hW1, y0: story.track.y0 * hH1, x1: story.track.x1 * hW1, y1: story.track.y1 * hH1 }
-      : null;
-    const pose = corePose(story.section, story.progress, { narrow, track });
-    if (story.section !== 'work') pose.pos[0] *= Math.min(1, camera.aspect / 1.6);
-    easeCore(agentState, pose, reduce ? 1 : 0.08, { visible: !!story.agent });
-    if (story.section === 'work') {
-      const si = stationIndex(story.progress);
-      if (si !== lastStation) {
-        if (lastStation >= 0) burst = 1; // flare on reaching a new station
-        lastStation = si;
-      }
-    } else lastStation = -1;
-    burst = reduce ? 0 : burst * 0.92;
-    agent.g.position.set(...agentState.pos);
-    agent.g.scale.setScalar(agentState.scale);
-    agent.sphere.rotation.y = t * 0.12;
-    agent.orbit.rotation.set(0.6 + ptr.y * 0.2, t * 0.5, 0.25 + ptr.x * 0.2);
-    agent.sphere.material.uniforms.uTime.value = t;
-    agent.orbit.material.uniforms.uTime.value = t;
-    agent.sphere.material.uniforms.uAmp.value = 0.12 + burst * 0.28 + ptr.speed * 0.1;
-    agent.halo.scale.setScalar(4.2 * (1 + burst * 0.7));
 
     renderer.render(scene, camera);
     if (!reduce && running) raf = requestAnimationFrame(frame);

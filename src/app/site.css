@@ -58,8 +58,21 @@ html, body { background: var(--bg); color: var(--ink); }
     box-shadow 0.3s ease, fill 0.3s ease, stroke 0.3s ease !important;
 }
 
-/* ── global layers: 3D ground < FluidCursor < content ─────────────────── */
-.neural-bg { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 0; display: block; pointer-events: none; }
+/* ── global layers: colour field < 3D neural layer < FluidCursor < content ── */
+.neural-bg { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 0; display: block; pointer-events: none; transition: opacity 0.6s ease; }
+.neural-bg.is-quiet { opacity: 0.28; } /* steps back while the agent demos are on screen */
+.color-field { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+.color-field i { position: absolute; border-radius: 50%; will-change: transform; }
+.color-field .cf-1 { width: 62vmax; height: 62vmax; right: -14vmax; top: -6vmax; background: radial-gradient(closest-side, var(--cf-blue), transparent); animation: cf-drift-1 26s ease-in-out infinite alternate; }
+.color-field .cf-2 { width: 46vmax; height: 46vmax; left: -10vmax; bottom: -18vmax; background: radial-gradient(closest-side, var(--cf-lime), transparent); animation: cf-drift-2 30s ease-in-out infinite alternate; }
+.color-field .cf-3 { width: 34vmax; height: 34vmax; left: 34%; top: 30%; background: radial-gradient(closest-side, var(--cf-cyan), transparent); animation: cf-drift-3 22s ease-in-out infinite alternate; }
+.color-field .cf-4 { width: 22vmax; height: 22vmax; right: 18%; bottom: -4vmax; background: radial-gradient(closest-side, var(--cf-lime-2), transparent); animation: cf-drift-1 34s ease-in-out infinite alternate-reverse; }
+:root { --cf-blue: rgb(58 120 255 / 0.36); --cf-lime: rgb(212 255 36 / 0.55); --cf-cyan: rgb(56 189 248 / 0.28); --cf-lime-2: rgb(212 255 36 / 0.42); }
+.dark { --cf-blue: rgb(58 120 255 / 0.26); --cf-lime: rgb(212 255 36 / 0.11); --cf-cyan: rgb(56 189 248 / 0.09); --cf-lime-2: rgb(212 255 36 / 0.07); }
+@keyframes cf-drift-1 { to { transform: translate(-6vmax, 5vmax) scale(1.08); } }
+@keyframes cf-drift-2 { to { transform: translate(7vmax, -4vmax) scale(1.12); } }
+@keyframes cf-drift-3 { to { transform: translate(-8vmax, -6vmax) scale(0.9); } }
+@media (prefers-reduced-motion: reduce) { .color-field i { animation: none; } }
 
 /* ── liquid glass ─────────────────────────────────────────────────────────
    Rule: no ancestor of .glass may keep a filter / opacity<1 / mask / clip-path

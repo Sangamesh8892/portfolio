@@ -2,11 +2,16 @@
 
 import { useTheme } from 'next-themes';
 import { useEffect, useRef } from 'react';
+import { subscribeStory } from '@/lib/story-store';
 import { NEURAL_PALETTES } from '@/lib/theme-palettes';
 
 const paletteFor = (theme) => NEURAL_PALETTES[theme === 'dark' ? 'dark' : 'light'];
 
-/** Full-screen 3D background shared by every page. three.js loads after first paint. */
+/**
+ * Full-screen 3D neural layer over the colour field, shared by every page.
+ * three.js loads after first paint. It steps back (.is-quiet) while the agent
+ * chapters are on screen, so their demos stay easy to read.
+ */
 export default function NeuralBackground() {
   const canvasRef = useRef(null);
   const sceneRef = useRef(null);
@@ -21,8 +26,10 @@ export default function NeuralBackground() {
       scene = createNeuralScene(canvasRef.current, paletteFor(isDark ? 'dark' : 'light'));
       sceneRef.current = scene;
     });
+    const unsubscribe = subscribeStory((s) => canvasRef.current?.classList.toggle('is-quiet', !!s.quiet));
     return () => {
       cancelled = true;
+      unsubscribe();
       scene?.destroy();
       sceneRef.current = null;
     };

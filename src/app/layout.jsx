@@ -1,4 +1,5 @@
 import FluidCursor from '@/components/FluidCursor';
+import ColorField from '@/components/site/ColorField';
 import GlassRuntime from '@/components/site/GlassRuntime';
 import NeuralBackground from '@/components/site/NeuralBackground';
 import { ThemeProvider } from '@/components/theme-provider';
@@ -70,8 +71,9 @@ export default function RootLayout({ children }) {
           enableSystem
           storageKey="b2-theme"
         >
-          {/* shared on every page: 3D ground, then the (unchanged) fluid cursor, then content */}
+          {/* shared on every page: colour field, 3D neural layer, the (unchanged) fluid cursor, then content */}
           <GlassRuntime />
+          <ColorField />
           <NeuralBackground />
           <FluidCursor />
           <main className="relative z-10 flex min-h-screen flex-col">
