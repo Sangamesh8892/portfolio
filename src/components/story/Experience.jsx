@@ -5,8 +5,8 @@ export default function Experience() {
   return (
     <section id="experience" data-story="experience" className="story-section experience">
       <div className="experience-inner">
-        <p className="eyebrow">Experience</p>
-        <h2>Where I've built it</h2>
+        <p className="eyebrow" data-reveal>Experience</p>
+        <h2 data-reveal="mask" style={{ '--d': 1 }}>Where I've built it</h2>
         <ol className="timeline">
           {experience.map((x) => (
             <li key={x.role + x.org} className="timeline-item">

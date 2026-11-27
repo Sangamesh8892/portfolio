@@ -5,10 +5,10 @@ export default function About() {
   return (
     <section id="about" data-story="about" className="story-section split about">
       <div className="split-text">
-        <p className="eyebrow">About</p>
-        <h2>{about.lead}</h2>
-        {about.body.map((p) => (
-          <p key={p} className="story-body">
+        <p className="eyebrow" data-reveal>About</p>
+        <h2 data-reveal="mask" style={{ '--d': 1 }}>{about.lead}</h2>
+        {about.body.map((p, i) => (
+          <p key={p} className="story-body" data-reveal style={{ '--d': 3 + i }}>
             {p}
           </p>
         ))}

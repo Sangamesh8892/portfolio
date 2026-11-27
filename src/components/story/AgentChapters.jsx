@@ -285,9 +285,9 @@ export default function AgentChapters() {
   return (
     <>
     <header id="agents" className="agents-intro">
-      <p className="eyebrow">My work</p>
-      <h2>Agents I’ve <em>built</em></h2>
-      <p className="story-body">
+      <p className="eyebrow" data-reveal>My work</p>
+      <h2 data-reveal="mask" style={{ '--d': 1 }}>Agents I’ve <em>built</em></h2>
+      <p className="story-body" data-reveal style={{ '--d': 3 }}>
         Each one takes a slow, manual part of SAP delivery and hands it to an agent, with a person checking the result.
         Scroll through the main ones first; every agent is listed after them.
       </p>

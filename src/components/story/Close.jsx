@@ -8,8 +8,8 @@ import { openSheet } from '@/lib/sheet-store';
 export default function Close() {
   return (
     <section id="contact" data-story="close" className="story-section story-close">
-      <p className="eyebrow">Next</p>
-      <h2>
+      <p className="eyebrow" data-reveal>Next</p>
+      <h2 data-reveal="mask" style={{ '--d': 1 }}>
         Let's build agents <em>that ship.</em>
       </h2>
       <div className="close-actions">

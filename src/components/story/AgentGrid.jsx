@@ -8,8 +8,8 @@ import { openSheet } from '@/lib/sheet-store';
 export default function AgentGrid() {
   return (
     <section id="all-agents" className="agent-grid-section" aria-labelledby="all-agents-title">
-      <p className="eyebrow">All agents · {agents.length}</p>
-      <h2 id="all-agents-title">Every agent I’ve built</h2>
+      <p className="eyebrow" data-reveal>All agents · {agents.length}</p>
+      <h2 id="all-agents-title" data-reveal="mask" style={{ '--d': 1 }}>Every agent I’ve built</h2>
       <ul className="agent-grid">
         {agents.map((a) => {
           const lead = a.results[0];

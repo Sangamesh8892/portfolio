@@ -61,7 +61,7 @@
 .ag-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); gap: 14px; }
 .ag-stats p, .agent-detail-stats p { font-size: 13px; line-height: 1.35; color: var(--ink-soft); }
 .ag-stats p > b, .agent-detail-stats p > b { display: block; font-size: 28px; font-weight: 500; letter-spacing: -0.02em; line-height: 1.1; color: var(--em); margin-bottom: 2px; }
-:root:not(.dark) .ag-stats p > b, :root:not(.dark) .agent-detail-stats p > b { background: linear-gradient(100deg, #155bc9, #2f8fd8); -webkit-background-clip: text; background-clip: text; color: transparent; }
+:root:not(.dark) .ag-stats p > b, :root:not(.dark) .agent-detail-stats p > b { background: linear-gradient(100deg, #0f4fb4, #1a6dc8); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .ag-more { margin-top: 14px; width: fit-content; height: 40px; padding: 0 16px; border-radius: 999px; border: 0; background: var(--brand); color: var(--brand-ink);
   font: inherit; font-size: 14px; font-weight: 500; cursor: pointer; transition: transform 0.15s var(--ease-out), filter 0.15s ease; }
 .ag-more:active { transform: scale(0.97); }
@@ -107,7 +107,7 @@
 .ag-code { margin: 0; padding: 14px; border-radius: 14px; border: 1px solid var(--ag-edge); font-family: var(--ag-mono); font-size: 12.5px; line-height: 1.7;
   white-space: pre; overflow: hidden; display: flex; flex-direction: column; }
 .ag-code .kw { color: var(--em); }
-:root:not(.dark) .ag-code .kw { color: #155bc9; }
+:root:not(.dark) .ag-code .kw { color: #0f4fb4; }
 .ag-code-line { transition: opacity 0.2s ease, transform 0.2s ease; }
 .agents.is-pinned .ag-code-line:not(.is-on) { opacity: 0; transform: translateX(-6px); }
 .ag-checks { display: flex; gap: 8px; flex-wrap: wrap; }
@@ -150,7 +150,7 @@
 .agent-card-foot { margin-top: auto; padding-top: 10px; display: flex; align-items: baseline; justify-content: space-between; gap: 10px;
   border-top: 1px solid color-mix(in oklab, var(--ink-soft) 16%, transparent); font-size: 13px; color: var(--ink-soft); }
 .agent-card-stat b { font-weight: 600; color: var(--em); }
-:root:not(.dark) .agent-card-stat b { color: #155bc9; }
+:root:not(.dark) .agent-card-stat b { color: #0f4fb4; }
 .agent-card-open { color: var(--ink); white-space: nowrap; }
 
 /* ── agent detail (inside the glass sheet) ── */

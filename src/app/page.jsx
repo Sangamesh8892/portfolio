@@ -9,6 +9,7 @@ import AgentGrid from '@/components/story/AgentGrid';
 import Close from '@/components/story/Close';
 import Experience from '@/components/story/Experience';
 import Hero from '@/components/story/Hero';
+import ScrollReveal from '@/components/story/ScrollReveal';
 import SmoothScroll from '@/components/story/SmoothScroll';
 
 /** The landing page is one scroll story; quick facts live in the dock. */
@@ -26,6 +27,7 @@ export default function Home() {
         <Experience />
         <Close />
       </div>
+      <ScrollReveal />
       <GlassDock />
       <DockSheet />
     </SmoothScroll>
