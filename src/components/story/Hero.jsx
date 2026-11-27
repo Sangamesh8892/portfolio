@@ -23,9 +23,10 @@ export default function Hero() {
       </span>
 
       <h1>
-        {hero.titleLine}
-        <br />
-        {hero.titleLead} <em>{hero.titleEmphasis}</em>
+        <span className="h1-line">{hero.titleLine}</span>
+        <span className="h1-line">
+          {hero.titleLead} <em>{hero.titleEmphasis}</em>
+        </span>
       </h1>
 
       <p className="hero-lead">{hero.lead}</p>
@@ -38,11 +39,15 @@ export default function Hero() {
               key={label}
               type="button"
               className={`tile glass ${i === 0 ? 'main' : ''}`}
-              style={i === 0 ? undefined : { '--c': color }}
+              data-icon={icon}
+              style={i === 0 ? { '--i': i } : { '--c': color, '--i': i }}
               onClick={() => openSheet(answerId)}
             >
               <span className="tile-ic">
-                <Icon size={19} strokeWidth={2} />
+                {/* two layers: the intro animates the svg, hover animates the wrapper */}
+                <span className="tile-ic-g">
+                  <Icon size={19} strokeWidth={2} />
+                </span>
               </span>
               <span>
                 <b>{label}</b>

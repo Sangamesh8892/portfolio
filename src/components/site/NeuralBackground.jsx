@@ -25,6 +25,8 @@ export default function NeuralBackground() {
       const isDark = document.documentElement.classList.contains('dark');
       scene = createNeuralScene(canvasRef.current, paletteFor(isDark ? 'dark' : 'light'));
       sceneRef.current = scene;
+      // fade in after the first frame, so it doesn't pop in mid-intro
+      requestAnimationFrame(() => requestAnimationFrame(() => canvasRef.current?.classList.add('is-ready')));
     });
     const unsubscribe = subscribeStory((s) => canvasRef.current?.classList.toggle('is-quiet', !!s.quiet));
     return () => {
