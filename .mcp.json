@@ -3,6 +3,14 @@
     "shadcn": {
       "command": "cmd",
       "args": ["/c", "npx", "-y", "shadcn@latest", "mcp"]
+    },
+    "chrome-devtools": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "chrome-devtools-mcp@latest"]
+    },
+    "context7": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "@upstash/context7-mcp@latest"]
     }
   }
 }
